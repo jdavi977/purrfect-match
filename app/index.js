@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 
 export default function Index() {
   return (
@@ -10,6 +10,7 @@ export default function Index() {
       }}
     >
       <Text>PURRFECT MATCH</Text>
+      <Image source = {require("../assets/images/icon.png")} />
     </View>
   );
 }
