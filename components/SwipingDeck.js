@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Swiper from "react-native-deck-swiper";
 
+const pets = [
+    {name: "Coco", breed: "hamster"},
+    {name: "Mila", breed: "bunny"},
+    {name: "Nori", breed: "bunny"}
+];
 
 const SwipingDeck = () => {
     const [likedPets, setLikedPets] = useState([]);
@@ -22,8 +27,34 @@ const SwipingDeck = () => {
         console.log("Disliked pets: ", dislikedPets)}, [dislikedPets]);
 
     return (
+        <View>
         <Text>Hello</Text>
-    )
-}
+            <View>
+                <Swiper
+                    cards={pets}
+                    renderCard={(pet) => (
+                        <View style={styles.card}>
+                            <Text style>{pet.name}</Text>
+                            <Text>{pet.breed}</Text>
+                        </View>
+                        )}
+                    onSwipedRight={handleLikedPets}
+                    onSwipedLeft={handleDislikedPets}
+                    stackSize={3}
+                />
+            </View>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    card: {
+        width: 300, 
+        height: 400,
+        backgroundColor: "white",
+        justifyContent: "center", 
+        alignItems: "center",
+    },
+})
 
 export default SwipingDeck;
