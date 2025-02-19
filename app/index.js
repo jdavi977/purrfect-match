@@ -1,4 +1,5 @@
 import { Text, View, Image } from "react-native";
+import SwipingDeck from "../components/SwipingDeck";
 
 export default function Index() {
   return (
@@ -9,8 +10,13 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>PURRFECT MATCH</Text>
-      <Image source = {require("../assets/images/icon.png")} />
+      <View> 
+        <SwipingDeck />
+      </View>
+      <View>
+        <Text>Purrfect Match</Text>
+      </View>
+
     </View>
   );
 }
