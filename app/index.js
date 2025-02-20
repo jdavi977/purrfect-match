@@ -1,5 +1,5 @@
 import { Text, View, Image } from "react-native";
-import SwipeDeck from "../components/SwipingDeck";
+import SwipingDeck from "../components/SwipingDeck";
 
 export default function Index() {
   return (
@@ -11,7 +11,7 @@ export default function Index() {
       }}
     >
       <View> 
-        <SwipeDeck />
+        <SwipingDeck />
       </View>
       <View>
         <Text>Purrfect Match</Text>

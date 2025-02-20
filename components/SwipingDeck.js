@@ -27,10 +27,10 @@ const SwipingDeck = () => {
         console.log("Disliked pets: ", dislikedPets)}, [dislikedPets]);
 
     return (
-        <View>
+        <View style={{justifyContent: "center", alignItems: "center"}}> 
         <Text>Hello</Text>
-            <View>
-                <Swiper
+            <View style={{justifyContent: "center", alignItems: "center"}}>
+                <Swiper style={{justifyContent: "center", alignItems: "center"}}
                     cards={pets}
                     renderCard={(pet) => (
                         <View style={styles.card}>
