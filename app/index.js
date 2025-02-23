@@ -1,3 +1,4 @@
+import { useNavigation } from "expo-router";
 import React, {useState, useEffect} from "react";
 import { View } from "react-native";
 import Card from "../components/Card.js";
@@ -6,6 +7,8 @@ import Swiper from "react-native-deck-swiper";
 
 
 export default function Index() {
+  const navigation = useNavigation();
+
   const [petData, setPetData] = useState(petDataArray);
   const [likedPets, setLikedPets] = useState([]);
   const [dislikedPets, setDislikedPets] = useState([]);
@@ -32,6 +35,10 @@ export default function Index() {
       setPetData(petDataArray);
     }
   }, [petData.length]);
+
+  useEffect(() => {
+    navigation.setOptions({ title: "Purrfect Match" });
+  }, [navigation]);
 
   return (
     <View
