@@ -37,7 +37,10 @@ export default function Index() {
   }, [petData.length]);
 
   useEffect(() => {
-    navigation.setOptions({ title: "Purrfect Match" });
+    navigation.setOptions({
+       title: "Purrfect Match",
+       headerTitleAlign: "center"
+        });
   }, [navigation]);
 
   return (
