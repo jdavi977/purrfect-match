@@ -2,7 +2,7 @@ export const petData = [
     {
         id: 1,
         name: "Oreo",
-        age: 6,
+        age: 5,
         breed: "Bulldog",
         image: require("../assets/images/bulldog.png")
     },
