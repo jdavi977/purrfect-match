@@ -9,6 +9,7 @@ import Swiper from "react-native-deck-swiper";
 export default function Index() {
   const navigation = useNavigation();
 
+  const [swipeDirection, setSwipeDirection] = useState(null);
   const [petData, setPetData] = useState(petDataArray);
   const [likedPets, setLikedPets] = useState([]);
   const [dislikedPets, setDislikedPets] = useState([]);
@@ -61,14 +62,27 @@ export default function Index() {
             age = {card.age}
             breed = {card.breed}
             image = {card.image}
+            swipeDirection={swipeDirection}
           />
         )}
+        verticalSwipe={false}
+        onSwiping={(x) => {
+          if (x > 100) {
+            setSwipeDirection((prev) => (prev !== "right" ? "right" : prev));
+        } else if (x < -100) {
+            setSwipeDirection((prev) => (prev !== "left" ? "left" : prev));
+        } else {
+            setSwipeDirection((prev) => (prev !== "reset" ? "reset" : prev));
+        }
+        }}
+        onSwiped={() => setSwipeDirection(null)}
         onSwipedRight = {handleLiked}
         onSwipedLeft = {handleDisliked}
-        stackSize = {3}
+        horizontalThreshold={100} 
         cardIndex = {0}
         infinite
         backgroundColor="transparent"
+        //onTapCard={handleLiked} use for pet profile
       />
     </View>
   );
