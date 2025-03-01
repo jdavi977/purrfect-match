@@ -6,9 +6,14 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const {width, height} = Dimensions.get("screen");
 
-const Card = ({name, age, breed, image}) => {
+const Card = ({name, age, breed, image, swipeDirection}) => {
     return (
-        <View style={styles.container}>
+        <View style={[
+            styles.container, 
+            swipeDirection === "right" && styles.outlineRight,
+            swipeDirection === "left" && styles.outlineLeft,
+            swipeDirection === "reset" && styles.outlineReset
+        ]}>
             <Image source={image} style={styles.image} />
             <LinearGradient
                 colors={['transparent', 'rgba(0,0,0,.9)']}
@@ -28,6 +33,25 @@ const styles = StyleSheet.create({
             position: "absolute",
             top: -30,
         },
+
+        outlineLeft: {
+            borderColor: "red",
+            borderWidth: 5,
+            borderRadius: 25
+        },
+
+        outlineRight: {
+            borderColor: "green",
+            borderWidth: 5,
+            borderRadius: 25
+        },
+
+        outlineReset: {
+            borderColor: "white",
+            borderWidth: 0,
+            borderRadius: 0
+        },
+
         userContainer: {
             position: "absolute",
             bottom: 24,
