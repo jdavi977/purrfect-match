@@ -21,6 +21,16 @@ export default function Index() {
     setDislikedPets((prev) => ([...prev, petData[index]]));
   };
 
+  const handleOutline = (colour) => {
+    if (colour === "green") {
+
+    } else {
+// borderColor: "green",
+// borderWidth: 5,
+// borderRadius: 25
+    }
+  };
+
   useEffect(() => {
     console.log("Pets liked: ", likedPets)
   }, [likedPets]);
@@ -65,7 +75,8 @@ export default function Index() {
         )}
         onSwipedRight = {handleLiked}
         onSwipedLeft = {handleDisliked}
-        stackSize = {3}
+        horizontalThreshold={225}
+        verticalSwipe={false}
         cardIndex = {0}
         infinite
         backgroundColor="transparent"

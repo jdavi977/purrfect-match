@@ -26,7 +26,7 @@ const Card = ({name, age, breed, image}) => {
 const styles = StyleSheet.create({
         container: {
             position: "absolute",
-            top: -30
+            top: -30,
         },
         userContainer: {
             position: "absolute",
