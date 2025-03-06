@@ -8,7 +8,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../components/CardButtons.js";
 import { AntDesign } from '@expo/vector-icons';
 
-const ICON_SIZE = 24;
+const ICON_SIZE = 28;
 
 export default function Index() {
   const navigation = useNavigation();
@@ -86,17 +86,17 @@ export default function Index() {
           //onTapCard={} use for pet profile
         />
       </View>
-      <View stlye={styles.buttonsContainer}>
+      <View style={styles.buttonsContainer}>
       <CardButton
           style={styles.button}
         >
-          <AntDesign name="heart" size={ICON_SIZE} color="white" />
+          <AntDesign name="close" size={ICON_SIZE} color="black" />
         </CardButton>
-        <CardButton
+      <CardButton
           style={styles.button}
         >
-          <AntDesign name="close" size={ICON_SIZE} color="white" />
-        </CardButton>
+        <AntDesign name="heart" size={ICON_SIZE} color="red" />
+      </CardButton>
       </View>
     </GestureHandlerRootView>
   );
@@ -105,16 +105,22 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   container: {
-
+    flex: 1, // Takes full available height
+    justifyContent: "center", // Centers vertically
+    alignItems: "center", // Centers horizontally
   },
   subContainer: {
-
+    flex: 1, // Takes full available height
+    justifyContent: "center", // Centers vertically
+    alignItems: "center", // Centers horizontally
+    width: "100%",
   },
+
   button: {
-    height: 50,
+    height: 60,
     borderRadius: 40,
     aspectRatio: 1,
-    backgroundColor: '#3A3D45',
+    backgroundColor: "white",
     elevation: 4,
     justifyContent: 'center',
     alignItems: 'center',
@@ -127,9 +133,11 @@ const styles = StyleSheet.create({
   },
   buttonsContainer: {
     flexDirection: 'row',
-    bottom: 34,
+    bottom: 130,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 24,
+    gap: 90,
+    position: 'absolute',
+    zIndex: 10,
   },
 });
