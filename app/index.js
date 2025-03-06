@@ -1,10 +1,14 @@
 import { useNavigation } from "expo-router";
 import React, {useState, useEffect} from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Card from "../components/Card.js";
 import {petData as petDataArray} from "../utils/petData";
 import Swiper from "react-native-deck-swiper";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import CardButton from "../components/CardButtons.js";
+import { AntDesign } from '@expo/vector-icons';
 
+const ICON_SIZE = 28;
 
 export default function Index() {
   const navigation = useNavigation();
@@ -45,45 +49,95 @@ export default function Index() {
   }, [navigation]);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white"
-      }}
-    >
-      <Swiper 
-        cards = {petData}
-        renderCard = { (card) =>  (
-          <Card 
-            key= {card.name}
-            name = {card.name}
-            age = {card.age}
-            breed = {card.breed}
-            image = {card.image}
-            swipeDirection={swipeDirection}
-          />
-        )}
-        verticalSwipe={false}
-        onSwiping={(x) => {
-          if (x > 100) {
-            setSwipeDirection((prev) => (prev !== "right" ? "right" : prev));
-        } else if (x < -100) {
-            setSwipeDirection((prev) => (prev !== "left" ? "left" : prev));
-        } else {
-            setSwipeDirection((prev) => (prev !== "reset" ? "reset" : prev));
-        }
-        }}
-        onSwiped={() => setSwipeDirection(null)}
-        onSwipedRight = {handleLiked}
-        onSwipedLeft = {handleDisliked}
-        horizontalThreshold={100} 
-        cardIndex = {0}
-        infinite
-        backgroundColor="transparent"
-        //onTapCard={handleLiked} use for pet profile
-      />
-    </View>
+    <GestureHandlerRootView style={styles.container}>
+      <View
+        style={styles.subContainer}
+      >
+        <Swiper 
+          cards = {petData}
+          renderCard = { (card) =>  (
+            <Card 
+              key= {card.name}
+              name = {card.name}
+              age = {card.age}
+              breed = {card.breed}
+              image = {card.image}
+              swipeDirection={swipeDirection}
+            />
+          )}
+          verticalSwipe={false}
+          onSwiping={(x) => {
+            if (x > 100) {
+              setSwipeDirection((prev) => (prev !== "right" ? "right" : prev));
+          } else if (x < -100) {
+              setSwipeDirection((prev) => (prev !== "left" ? "left" : prev));
+          } else {
+              setSwipeDirection((prev) => (prev !== "reset" ? "reset" : prev));
+          }
+          }}
+          
+          onSwiped={() => setSwipeDirection(null)}
+          onSwipedRight = {handleLiked}
+          onSwipedLeft = {handleDisliked}
+          horizontalThreshold={100} 
+          cardIndex = {0}
+          infinite
+          backgroundColor="transparent"
+          //onTapCard={} use for pet profile
+        />
+      </View>
+      <View style={styles.buttonsContainer}>
+      <CardButton
+          style={styles.button}
+        >
+          <AntDesign name="close" size={ICON_SIZE} color="black" />
+        </CardButton>
+      <CardButton
+          style={styles.button}
+        >
+        <AntDesign name="heart" size={ICON_SIZE} color="red" />
+      </CardButton>
+      </View>
+    </GestureHandlerRootView>
   );
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1, // Takes full available height
+    justifyContent: "center", // Centers vertically
+    alignItems: "center", // Centers horizontally
+  },
+  subContainer: {
+    flex: 1, // Takes full available height
+    justifyContent: "center", // Centers vertically
+    alignItems: "center", // Centers horizontally
+    width: "100%",
+  },
+
+  button: {
+    height: 60,
+    borderRadius: 40,
+    aspectRatio: 1,
+    backgroundColor: "white",
+    elevation: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+  },
+  buttonsContainer: {
+    flexDirection: 'row',
+    bottom: 130,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 90,
+    position: 'absolute',
+    zIndex: 10,
+  },
+});

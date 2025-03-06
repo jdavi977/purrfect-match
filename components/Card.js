@@ -72,14 +72,15 @@ const styles = StyleSheet.create({
             borderBottomLeftRadius: 20,
         },
         nameText: {
-            fontSize: 40,
+            fontSize: 30,
             color: "white",
-            fontWeight: 300
+            fontWeight: 300,
         },
         breedText: {
             fontSize: 20,
             color: "white",
-            fontWeight: 300
+            fontWeight: 300,
+            height: 60
         },
 });
 
