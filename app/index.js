@@ -1,5 +1,5 @@
 import { useNavigation } from "expo-router";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { View, StyleSheet } from "react-native";
 import Card from "../components/Card.js";
 import {petData as petDataArray} from "../utils/petData";
@@ -12,6 +12,7 @@ const ICON_SIZE = 28;
 
 export default function Index() {
   const navigation = useNavigation();
+  const swiperRef = useRef(null);
 
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [petData, setPetData] = useState(petDataArray);
@@ -54,6 +55,7 @@ export default function Index() {
         style={styles.subContainer}
       >
         <Swiper 
+          ref={swiperRef}
           cards = {petData}
           renderCard = { (card) =>  (
             <Card 
@@ -89,11 +91,13 @@ export default function Index() {
       <View style={styles.buttonsContainer}>
       <CardButton
           style={styles.button}
+          onTap={() => swiperRef.current?.swipeLeft()}
         >
           <AntDesign name="close" size={ICON_SIZE} color="black" />
         </CardButton>
       <CardButton
           style={styles.button}
+          onTap={() => swiperRef.current?.swipeRight()}
         >
         <AntDesign name="heart" size={ICON_SIZE} color="red" />
       </CardButton>
@@ -136,7 +140,7 @@ const styles = StyleSheet.create({
     bottom: 130,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 90,
+    gap: 120,
     position: 'absolute',
     zIndex: 10,
   },
