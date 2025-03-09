@@ -6,9 +6,9 @@ import {petData as petDataArray} from "../utils/petData";
 import Swiper from "react-native-deck-swiper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../components/CardButtons.js";
-import { AntDesign } from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
 
-const ICON_SIZE = 28;
+const ICON_SIZE = 29;
 
 export default function Index() {
   const navigation = useNavigation();
@@ -93,13 +93,13 @@ export default function Index() {
           style={styles.button}
           onTap={() => swiperRef.current?.swipeLeft()}
         >
-          <AntDesign name="close" size={ICON_SIZE} color="black" />
+          <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
         </CardButton>
       <CardButton
           style={styles.button}
           onTap={() => swiperRef.current?.swipeRight()}
         >
-        <AntDesign name="heart" size={ICON_SIZE} color="red" />
+        <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
       </CardButton>
       </View>
     </GestureHandlerRootView>
