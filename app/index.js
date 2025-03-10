@@ -6,9 +6,11 @@ import {petData as petDataArray} from "../utils/petData";
 import Swiper from "react-native-deck-swiper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../components/CardButtons.js";
-import {FontAwesome} from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
-const ICON_SIZE = 29;
+
+const ICON_SIZE = 28;
 
 export default function Index() {
   const navigation = useNavigation();
@@ -54,8 +56,8 @@ export default function Index() {
       <View
         style={styles.subContainer}
       >
-        <Swiper 
-          ref={swiperRef}
+        <Swiper
+          ref = {swiperRef}
           cards = {petData}
           renderCard = { (card) =>  (
             <Card 
@@ -94,13 +96,14 @@ export default function Index() {
           onTap={() => swiperRef.current?.swipeLeft()}
         >
           <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
-        </CardButton>
+          </CardButton>
+
       <CardButton
           style={styles.button}
           onTap={() => swiperRef.current?.swipeRight()}
         >
         <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
-      </CardButton>
+        </CardButton>
       </View>
     </GestureHandlerRootView>
   );
@@ -140,7 +143,7 @@ const styles = StyleSheet.create({
     bottom: 130,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 120,
+    gap: 110,
     position: 'absolute',
     zIndex: 10,
   },
