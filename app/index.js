@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     bottom: 130,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 120,
+    gap: 90,
     position: 'absolute',
     zIndex: 10,
   },
