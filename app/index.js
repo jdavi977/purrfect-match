@@ -90,7 +90,7 @@ export default function Index() {
       <CardButton
           style={styles.button}
         >
-          <AntDesign name="close" size={ICON_SIZE} colors="black" />
+          <AntDesign name="close" size={ICON_SIZE} color="black" />
         </CardButton>
       <CardButton
           style={styles.button}
