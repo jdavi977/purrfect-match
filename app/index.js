@@ -1,18 +1,17 @@
 import { useNavigation } from "expo-router";
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect} from "react";
 import { View, StyleSheet } from "react-native";
 import Card from "../components/Card.js";
 import {petData as petDataArray} from "../utils/petData";
 import Swiper from "react-native-deck-swiper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../components/CardButtons.js";
-import {FontAwesome} from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
-const ICON_SIZE = 29;
+const ICON_SIZE = 28;
 
 export default function Index() {
   const navigation = useNavigation();
-  const swiperRef = useRef(null);
 
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [petData, setPetData] = useState(petDataArray);
@@ -55,7 +54,6 @@ export default function Index() {
         style={styles.subContainer}
       >
         <Swiper 
-          ref={swiperRef}
           cards = {petData}
           renderCard = { (card) =>  (
             <Card 
@@ -91,15 +89,13 @@ export default function Index() {
       <View style={styles.buttonsContainer}>
       <CardButton
           style={styles.button}
-          onTap={() => swiperRef.current?.swipeLeft()}
         >
-          <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
+          <AntDesign name="close" size={ICON_SIZE} colors="black" />
         </CardButton>
       <CardButton
           style={styles.button}
-          onTap={() => swiperRef.current?.swipeRight()}
         >
-        <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
+        <AntDesign name="heart" size={ICON_SIZE} color="red" />
       </CardButton>
       </View>
     </GestureHandlerRootView>
