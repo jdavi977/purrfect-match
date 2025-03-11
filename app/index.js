@@ -6,8 +6,9 @@ import {petData as petDataArray} from "../utils/petData";
 import Swiper from "react-native-deck-swiper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../components/CardButtons.js";
-import { AntDesign } from '@expo/vector-icons';
+import NavigationButtons from "../components/NavigationButtons.js"
 import { FontAwesome } from '@expo/vector-icons';
+import PetDescription from "../components/PetDescription.js"
 
 
 const ICON_SIZE = 28;
@@ -27,6 +28,11 @@ export default function Index() {
 
   const handleDisliked = (index) => {
     setDislikedPets((prev) => ([...prev, petData[index]]));
+  };
+
+  const tappedCard = (index) => {
+    <PetDescription data = {index}/>
+    console.log(index);
   };
 
   useEffect(() => {
@@ -87,10 +93,10 @@ export default function Index() {
           cardIndex = {0}
           infinite
           backgroundColor="transparent"
-          //onTapCard={} use for pet profile
+          onTapCard={tappedCard}
         />
       </View>
-      <View style={styles.buttonsContainer}>
+      <View style={styles.swipeButtonsContainer}>
       <CardButton
           style={styles.button}
           onTap={() => swiperRef.current?.swipeLeft()}
@@ -104,6 +110,23 @@ export default function Index() {
         >
         <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
         </CardButton>
+      </View>
+      <View style={styles.navigationButtonsContainer}>
+          <NavigationButtons
+            style={styles.button}
+          >
+            <FontAwesome name="user" size={ICON_SIZE} color="black" />
+          </NavigationButtons>
+          <NavigationButtons
+            style={styles.button}
+          >
+            <FontAwesome name="user" size={ICON_SIZE} color="black" />
+          </NavigationButtons>
+          <NavigationButtons
+            style={styles.button}
+          >            
+          <FontAwesome name="user" size={ICON_SIZE} color="black" />
+          </NavigationButtons>
       </View>
     </GestureHandlerRootView>
   );
@@ -138,7 +161,7 @@ const styles = StyleSheet.create({
       height: 4,
     },
   },
-  buttonsContainer: {
+  swipeButtonsContainer: {
     flexDirection: 'row',
     bottom: 130,
     alignItems: 'center',
@@ -146,5 +169,14 @@ const styles = StyleSheet.create({
     gap: 110,
     position: 'absolute',
     zIndex: 10,
-  },
+  }, 
+  navigationButtonsContainer: {
+    flexDirection: 'row',
+    bottom: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 40,
+    position: 'absolute',
+    zIndex: 10,
+  }
 });
