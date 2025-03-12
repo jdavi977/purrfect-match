@@ -2,12 +2,10 @@ import React from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from "expo-linear-gradient";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-
 
 const {width, height} = Dimensions.get("screen");
 
-const Card = ({name, age, breed, image, onTapImage, swiperRef}) => {
+const Card = ({name, age, breed, image, location}) => {
     return (
         <View style={styles.container}>
             <Image source={image} style={styles.image} />
@@ -16,8 +14,9 @@ const Card = ({name, age, breed, image, onTapImage, swiperRef}) => {
                 style={styles.gradient}
                 >
                     <View style={styles.userContainer}>
-                        <Text style={styles.nameText}>{name}, {age}</Text>
                         <Text style={styles.breedText}>{breed}</Text>
+                        <Text style={styles.nameText}>{name}, {age}</Text>
+                        <Text style={styles.locationText}>{location}</Text>
                     </View>
             </LinearGradient>
         </View>
@@ -26,7 +25,6 @@ const Card = ({name, age, breed, image, onTapImage, swiperRef}) => {
 
 const styles = StyleSheet.create({
         container: {
-            position: "absolute",
             top: -30,
         },
 
@@ -69,14 +67,17 @@ const styles = StyleSheet.create({
         },
         nameText: {
             fontSize: 30,
+            color: "yellow",
+        },
+        breedText: {
+            fontSize: 11,
             color: "white",
             fontWeight: 300,
         },
-        breedText: {
-            fontSize: 20,
+        locationText: {
+            fontSize: 14,
             color: "white",
-            fontWeight: 300,
-            height: 60
+            height: 30,
         },
 });
 

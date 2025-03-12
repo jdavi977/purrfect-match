@@ -1,6 +1,6 @@
 import { useNavigation } from "expo-router";
 import React, {useState, useEffect, useRef} from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Modal, Dimensions } from "react-native";
 import Card from "../components/Card.js";
 import {petData as petDataArray} from "../utils/petData";
 import Swiper from "react-native-deck-swiper";
@@ -10,6 +10,8 @@ import NavigationButtons from "../components/NavigationButtons.js"
 import { FontAwesome } from '@expo/vector-icons';
 import PetDescription from "../components/PetDescription.js"
 
+const {width, height} = Dimensions.get("screen");
+
 
 const ICON_SIZE = 28;
 
@@ -17,10 +19,11 @@ export default function Index() {
   const navigation = useNavigation();
   const swiperRef = useRef(null);
 
-  const [swipeDirection, setSwipeDirection] = useState(null);
+  //const [swipeDirection, setSwipeDirection] = useState(null);
   const [petData, setPetData] = useState(petDataArray);
   const [likedPets, setLikedPets] = useState([]);
   const [dislikedPets, setDislikedPets] = useState([]);
+  const [selectedPet, setSelectedPet] = useState(null);
 
   const handleLiked = (index) => {
     setLikedPets((prev) => ([...prev, petData[index]]));
@@ -31,10 +34,8 @@ export default function Index() {
   };
 
   const tappedCard = (index) => {
-    <PetDescription data = {index}/>
-    console.log(index);
+    setSelectedPet(petData[index]); 
   };
-
   useEffect(() => {
     console.log("Pets liked: ", likedPets)
   }, [likedPets]);
@@ -61,17 +62,15 @@ export default function Index() {
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.subContainer}>
         <Swiper
-          containerStyle={{width: "90%", height: "67%"}}  // TRYING TO MATCH CARD SIZE TO FIX onTAPCARD
           ref = {swiperRef}
           cards = {petData}
           renderCard = { (card) =>  (
             <Card 
-              key= {card.name}
               name = {card.name}
               age = {card.age}
               breed = {card.breed}
               image = {card.image}
-              swipeDirection={swipeDirection}
+              location = {card.location}
             />
           )}
           verticalSwipe={false}
@@ -85,7 +84,7 @@ export default function Index() {
 //          }
 //          }}
           
-          onSwiped={() => setSwipeDirection(null)}
+          //onSwiped={() => setSwipeDirection(null)}
           onSwipedRight = {handleLiked}
           onSwipedLeft = {handleDisliked}
           horizontalThreshold={100} 
@@ -94,6 +93,9 @@ export default function Index() {
           backgroundColor="transparent"
           onTapCard={tappedCard}
         />
+        <Modal visible={!!selectedPet} animationType="slide">
+            <PetDescription pet={selectedPet} onClose={() => setSelectedPet(null)} />
+        </Modal>
     </View>
     <View style={styles.cardButtonsContainer}>
       <CardButton
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
   cardButtonsContainer: {
     position: "absolute",
     flexDirection: 'row',
-    bottom: 130,
+    bottom: height * 0.12,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 110,
