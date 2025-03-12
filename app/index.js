@@ -59,10 +59,9 @@ export default function Index() {
 
   return (
     <GestureHandlerRootView style={styles.container}>
-      <View
-        style={styles.subContainer}
-      >
+      <View style={styles.subContainer}>
         <Swiper
+          containerStyle={{width: "90%", height: "67%"}}  // TRYING TO MATCH CARD SIZE TO FIX onTAPCARD
           ref = {swiperRef}
           cards = {petData}
           renderCard = { (card) =>  (
@@ -76,15 +75,15 @@ export default function Index() {
             />
           )}
           verticalSwipe={false}
-          onSwiping={(x) => {
-            if (x > 100) {
-              setSwipeDirection((prev) => (prev !== "right" ? "right" : prev));
-          } else if (x < -100) {
-              setSwipeDirection((prev) => (prev !== "left" ? "left" : prev));
-          } else {
-              setSwipeDirection((prev) => (prev !== "reset" ? "reset" : prev));
-          }
-          }}
+//          onSwiping={(x) => {
+//            if (x > 100) {
+//              setSwipeDirection((prev) => (prev !== "right" ? "right" : prev));
+//          } else if (x < -100) {
+//              setSwipeDirection((prev) => (prev !== "left" ? "left" : prev));
+//          } else {
+//              setSwipeDirection((prev) => (prev !== "reset" ? "reset" : prev));
+//          }
+//          }}
           
           onSwiped={() => setSwipeDirection(null)}
           onSwipedRight = {handleLiked}
@@ -95,39 +94,39 @@ export default function Index() {
           backgroundColor="transparent"
           onTapCard={tappedCard}
         />
-      </View>
-      <View style={styles.swipeButtonsContainer}>
+    </View>
+    <View style={styles.cardButtonsContainer}>
       <CardButton
           style={styles.cardButtons}
           onTap={() => swiperRef.current?.swipeLeft()}
         >
-          <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
-          </CardButton>
+        <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
+      </CardButton>
 
       <CardButton
           style={styles.cardButtons}
           onTap={() => swiperRef.current?.swipeRight()}
         >
         <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
-        </CardButton>
-      </View>
-      <View style={styles.navigationButtonsContainer}>
-          <NavigationButtons
-            style={styles.navigationButtons}
-          >
-            <FontAwesome name="user" size={ICON_SIZE} color="black" />
-          </NavigationButtons>
-          <NavigationButtons
-            style={styles.navigationButtons}
-          >
-            <FontAwesome name="user" size={ICON_SIZE} color="black" />
-          </NavigationButtons>
-          <NavigationButtons
-            style={styles.navigationButtons}
-          >            
-          <FontAwesome name="user" size={ICON_SIZE} color="black" />
-          </NavigationButtons>
-      </View>
+      </CardButton>
+    </View>
+    <View style={styles.navigationButtonsContainer}>
+      <NavigationButtons
+        style={styles.navigationButtons}
+      >
+        <FontAwesome name="user" size={ICON_SIZE} color="black" />
+      </NavigationButtons>
+      <NavigationButtons
+        style={styles.navigationButtons}
+      >
+        <FontAwesome name="user" size={ICON_SIZE} color="black" />
+      </NavigationButtons>
+      <NavigationButtons
+        style={styles.navigationButtons}
+      >            
+        <FontAwesome name="user" size={ICON_SIZE} color="black" />
+      </NavigationButtons>
+    </View>
     </GestureHandlerRootView>
   );
 }
@@ -138,16 +137,15 @@ const styles = StyleSheet.create({
     flex: 1, // Takes full available height
     justifyContent: "center", // Centers vertically
     alignItems: "center", // Centers horizontally 
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   subContainer: {
-    flex: 1, // Takes full available height
-    justifyContent: "center", // Centers vertically
-    alignItems: "center", // Centers horizontally
+    flex: 1, 
+    justifyContent: "center", 
+    alignItems: "center", 
     width: "100%",
-    height: "100%"
+    maxWidth: "100%",
   },
-
   cardButtons: {
     height: 60,
     borderRadius: 40,
@@ -170,7 +168,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  swipeButtonsContainer: {
+  cardButtonsContainer: {
+    position: "absolute",
     flexDirection: 'row',
     bottom: 130,
     alignItems: 'center',
@@ -180,12 +179,17 @@ const styles = StyleSheet.create({
     zIndex: 10,
   }, 
   navigationButtonsContainer: {
+    position: "absolute",
+    width: "100%",
     flexDirection: 'row',
-    bottom: 30,
+    bottom: 0,
+    borderTopWidth: 60,
+    borderBottomWidth: 30,
+    borderColor: "white",
     alignItems: 'center',
     justifyContent: 'center',
     gap: 20,
     position: 'absolute',
-    zIndex: 10,
+    zIndex: 1,
   }
 });

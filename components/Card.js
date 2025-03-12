@@ -2,18 +2,14 @@ import React from "react";
 import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from "expo-linear-gradient";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 
 const {width, height} = Dimensions.get("screen");
 
-const Card = ({name, age, breed, image, swipeDirection}) => {
+const Card = ({name, age, breed, image, onTapImage, swiperRef}) => {
     return (
-        <View style={[
-            styles.container, 
-            swipeDirection === "right" && styles.outlineRight,
-            swipeDirection === "left" && styles.outlineLeft,
-            swipeDirection === "reset" && styles.outlineReset
-        ]}>
+        <View style={styles.container}>
             <Image source={image} style={styles.image} />
             <LinearGradient
                 colors={['transparent', 'rgba(0,0,0,.9)']}
