@@ -98,14 +98,14 @@ export default function Index() {
       </View>
       <View style={styles.swipeButtonsContainer}>
       <CardButton
-          style={styles.button}
+          style={styles.cardButtons}
           onTap={() => swiperRef.current?.swipeLeft()}
         >
           <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
           </CardButton>
 
       <CardButton
-          style={styles.button}
+          style={styles.cardButtons}
           onTap={() => swiperRef.current?.swipeRight()}
         >
         <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
@@ -113,17 +113,17 @@ export default function Index() {
       </View>
       <View style={styles.navigationButtonsContainer}>
           <NavigationButtons
-            style={styles.button}
+            style={styles.navigationButtons}
           >
             <FontAwesome name="user" size={ICON_SIZE} color="black" />
           </NavigationButtons>
           <NavigationButtons
-            style={styles.button}
+            style={styles.navigationButtons}
           >
             <FontAwesome name="user" size={ICON_SIZE} color="black" />
           </NavigationButtons>
           <NavigationButtons
-            style={styles.button}
+            style={styles.navigationButtons}
           >            
           <FontAwesome name="user" size={ICON_SIZE} color="black" />
           </NavigationButtons>
@@ -137,16 +137,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // Takes full available height
     justifyContent: "center", // Centers vertically
-    alignItems: "center", // Centers horizontally
+    alignItems: "center", // Centers horizontally 
+    backgroundColor: "white"
   },
   subContainer: {
     flex: 1, // Takes full available height
     justifyContent: "center", // Centers vertically
     alignItems: "center", // Centers horizontally
     width: "100%",
+    height: "100%"
   },
 
-  button: {
+  cardButtons: {
     height: 60,
     borderRadius: 40,
     aspectRatio: 1,
@@ -161,6 +163,13 @@ const styles = StyleSheet.create({
       height: 4,
     },
   },
+  navigationButtons: {
+    height: 60,
+    aspectRatio: 1,
+    backgroundColor: "white",
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   swipeButtonsContainer: {
     flexDirection: 'row',
     bottom: 130,
@@ -172,10 +181,10 @@ const styles = StyleSheet.create({
   }, 
   navigationButtonsContainer: {
     flexDirection: 'row',
-    bottom: 50,
+    bottom: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 40,
+    gap: 20,
     position: 'absolute',
     zIndex: 10,
   }
