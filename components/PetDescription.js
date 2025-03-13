@@ -161,12 +161,13 @@ const styles = StyleSheet.create({
     ageContainer: {
         flexDirection: 'row',
         justifyContent: "space-around",
-        marginTop: 10,
+        marginTop: 15,
         paddingHorizontal: 20,
+        marginBottom: 15
     },
     locationContainer: {
         flexDirection: "row",
-        gap: 115,
+        gap: 118,
     },
     ageInfo: {
         alignItems: "center",
@@ -186,7 +187,6 @@ const styles = StyleSheet.create({
     },
     breedText: {
         fontSize: 12,
-        color: "gray",
     },
     nameText: {
         fontSize: 28,
@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
         color: "#333",
     },
     locationText: {
+        marginTop: 2,
         fontSize: 14,
         color: "#333",
     },
@@ -213,6 +214,7 @@ const styles = StyleSheet.create({
         color: "#333",
     },
     tabContainer: {
+        marginTop: 10,
         flexDirection: "row",
         left: 15
     },
@@ -228,29 +230,29 @@ const styles = StyleSheet.create({
     },
     tabText: {
         color: "#333",
-        fontSize: 14,
+        fontSize: 18,
     },
     tabTextActive: {
         color: "white",
-        fontSize: 14,
+        fontSize: 18,
     },
     aboutMeContainer: {
         paddingHorizontal: 20,
-        marginTop: 15,
+        marginTop: 25,
     },
     sectionTitle: {
-        fontSize: 18,
+        fontSize: 24,
         fontWeight: "bold",
         color: "#333",
         marginBottom: 5,
     },
     aboutMeText: {
-        fontSize: 14,
+        fontSize: 17,
         color: "#555",
     },
     lifestyleContainer: {
         paddingHorizontal: 20,
-        marginTop: 20,
+        marginTop: 25,
     },
     tagsContainer: {
         flexDirection: "row",
@@ -263,7 +265,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 15,
         borderRadius: 5,
-        fontSize: 14,
+        fontSize: 15,
         color: "#333",
     },
     adoptionButton: {
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 8,
         marginHorizontal: 20,
-        marginTop: 15,
+        marginTop: 30,
         alignItems: "center",
     },
     adoptionButtonText: {
