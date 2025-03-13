@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, Dimensions, Button, TouchableOpacity } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import { Image } from 'expo-image';
 import { FontAwesome } from '@expo/vector-icons';
 import CardButton from "../components/CardButtons.js";
@@ -11,6 +11,8 @@ const PetDescription = ({ pet, onClose }) => {
 
     return (
         <View style={styles.container}>
+
+        <ScrollView style={styles.scrollContainer}>
 
             {/* Pet Image */}
             <Image source={pet.image} style={styles.image} />
@@ -95,6 +97,7 @@ const PetDescription = ({ pet, onClose }) => {
             <TouchableOpacity style={styles.adoptionButton} onPress={() => console.log("Applying for adoption")}>
                 <Text style={styles.adoptionButtonText}>Apply for Adoption</Text>
             </TouchableOpacity>
+        </ScrollView>
         </View>
     );
 };
@@ -150,6 +153,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    scrollContainer: {
+        flexGrow: 1,
+        paddingBottom: 20
     },
     ageContainer: {
         flexDirection: 'row',

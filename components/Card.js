@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
             color: "yellow",
         },
         breedText: {
-            fontSize: 11,
+            fontSize: 12,
             color: "white",
             fontWeight: 300,
         },
