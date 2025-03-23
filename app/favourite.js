@@ -1,21 +1,55 @@
-import { View, Text } from "react-native";
-import React, {useEffect} from "react";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, SafeAreaView } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import FavouriteCard from "../components/FavouriteCard";
 import { useNavigation } from "expo-router";
 
-
 export default function Favourite() {
+  const [likedPets, setLikedPets] = useState([]);
+  const navigation = useNavigation();
 
-    const navigation = useNavigation();
+  useEffect(() => {
+    navigation.setOptions({
+       title: "Favourite List",
+       headerTitleAlign: "center"
+        });
+  }, [navigation]);
 
-    useEffect(() => {
-        navigation.setOptions({
-           title: "Favourite List",
-           headerTitleAlign: "center"
-            });
-      }, [navigation]);
+  useEffect(() => {
+    const loadLikedPets = async () => {
+      try {
+        const storedPets = await AsyncStorage.getItem("likedPets");
+        if (storedPets) {
+          setLikedPets(JSON.parse(storedPets));
+        }
+      } catch (error) {
+        console.error("Error loading liked pets:", error);
+      }
+    };
+
+    loadLikedPets();
+  }, []);
+
   return (
-    <View>
-      <Text>This is the Favourite page!</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+
+      <FlatList
+        data={likedPets}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <FavouriteCard
+            name={item.name}
+            age={item.age}
+            breed={item.breed}
+            image={item.image}
+          />
+        )}
+        contentContainerStyle={styles.listContent}
+      />
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+
+})

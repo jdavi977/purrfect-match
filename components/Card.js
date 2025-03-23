@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
 
         userContainer: {
             position: "absolute",
-            bottom: 24,
-            left: 24
+            bottom: 40,
+            left: 15
         },
         image: {
             width: width * 0.9,
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
             borderBottomLeftRadius: 20,
         },
         nameText: {
-            fontSize: 30,
+            fontSize: 27,
             color: "yellow",
         },
         breedText: {

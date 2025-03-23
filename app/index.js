@@ -10,6 +10,7 @@ import NavigationButtons from "../components/NavigationButtons.js"
 import { FontAwesome } from '@expo/vector-icons';
 import PetDescription from "../components/PetDescription.js";
 import {useRouter} from "expo-router";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const {width, height} = Dimensions.get("screen");
 
@@ -40,7 +41,15 @@ export default function Index() {
     setSelectedPet(petData[index]); 
   };
   useEffect(() => {
-    console.log("Pets liked: ", likedPets)
+    const saveLikedPets = async () => {
+      try {
+        await AsyncStorage.setItem("likedPets", JSON.stringify(likedPets));
+      } catch (error) {
+        console.error("Error saving liked pets:", error);
+      }
+    };
+  
+    saveLikedPets();
   }, [likedPets]);
 
   useEffect(() => {
