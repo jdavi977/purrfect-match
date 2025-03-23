@@ -1,6 +1,6 @@
 import { useNavigation } from "expo-router";
 import React, {useState, useEffect, useRef} from "react";
-import { View, StyleSheet, Modal, Dimensions } from "react-native";
+import { View, StyleSheet, Modal, Dimensions, Text } from "react-native";
 import Card from "../components/Card.js";
 import {petData as petDataArray} from "../utils/petData";
 import Swiper from "react-native-deck-swiper";
@@ -8,7 +8,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../components/CardButtons.js";
 import NavigationButtons from "../components/NavigationButtons.js"
 import { FontAwesome } from '@expo/vector-icons';
-import PetDescription from "../components/PetDescription.js"
+import PetDescription from "../components/PetDescription.js";
+import {useRouter} from "expo-router";
 
 const {width, height} = Dimensions.get("screen");
 
@@ -24,6 +25,8 @@ export default function Index() {
   const [likedPets, setLikedPets] = useState([]);
   const [dislikedPets, setDislikedPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
+
+  const router = useRouter();
 
   const handleLiked = (index) => {
     setLikedPets((prev) => ([...prev, petData[index]]));
@@ -53,7 +56,7 @@ export default function Index() {
 
   useEffect(() => {
     navigation.setOptions({
-       title: "Purrfect Match",
+       title: "Browse Pets",
        headerTitleAlign: "center"
         });
   }, [navigation]);
@@ -117,16 +120,20 @@ export default function Index() {
         style={styles.navigationButtons}
       >
         <FontAwesome name="user" size={ICON_SIZE} color="black" />
+        <Text style={styles.navLabel}>Feed</Text>
       </NavigationButtons>
       <NavigationButtons
         style={styles.navigationButtons}
+        onTap={() => router.push("/favourite")}
       >
         <FontAwesome name="user" size={ICON_SIZE} color="black" />
+        <Text style={styles.navLabel}>Favourite</Text>
       </NavigationButtons>
       <NavigationButtons
         style={styles.navigationButtons}
       >            
         <FontAwesome name="user" size={ICON_SIZE} color="black" />
+        <Text style={styles.navLabel}>Profile</Text>
       </NavigationButtons>
     </View>
     </GestureHandlerRootView>
@@ -185,13 +192,19 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: 'row',
     bottom: 0,
-    borderTopWidth: 60,
-    borderBottomWidth: 30,
+    height: 120,
+    borderTopWidth: 40,
+    borderBottomWidth: 70,
     borderColor: "white",
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     gap: 20,
     position: 'absolute',
     zIndex: 1,
-  }
+  },
+  navLabel: {
+  fontSize: 12,
+  color: '#444',
+  marginTop: 4,
+},
 });
