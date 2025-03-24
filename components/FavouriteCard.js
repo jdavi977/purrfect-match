@@ -1,17 +1,16 @@
 import React from "react";
-import { View, Text, StyleSheet} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Modal} from "react-native";
 import { Image } from 'expo-image';
 import { FontAwesome } from "@expo/vector-icons";
 
-const FavouriteCard = ({ name, age, breed, image }) => {
-
+const FavouriteCard = ({ name, age, breed, image, onPress }) => {
   return (
     <View style={styles.cardContainer}>
       {/* Card image + heart icon */}
-      <View style={styles.imageWrapper}>
+      <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
         <Image source={image} style={styles.image} />
         <FontAwesome name="heart" size={20} color="#FF3366" style={styles.heartIcon} />
-      </View>
+      </TouchableOpacity>
 
       {/* Pet details */}
       <Text style={styles.name}>{name}, {age}</Text>
