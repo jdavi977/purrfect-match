@@ -30,7 +30,16 @@ export default function Index() {
   const router = useRouter();
 
   const handleLiked = (index) => {
-    setLikedPets((prev) => ([...prev, petData[index]]));
+    const pet = petData[index];
+  
+    // Only add if not already in the likedPets array (by id)
+    setLikedPets((prev) => {
+      const alreadyLiked = prev.some((p) => p.id === pet.id);
+      if (!alreadyLiked) {
+        return [...prev, pet];
+      }
+      return prev;
+    });
   };
 
   const handleDisliked = (index) => {
@@ -128,14 +137,14 @@ export default function Index() {
       <NavigationButtons
         style={styles.navigationButtons}
       >
-        <FontAwesome name="user" size={ICON_SIZE} color="black" />
+        <FontAwesome name="paw" size={ICON_SIZE} color="black" />
         <Text style={styles.navLabel}>Feed</Text>
       </NavigationButtons>
       <NavigationButtons
         style={styles.navigationButtons}
         onTap={() => router.push("/favourite")}
       >
-        <FontAwesome name="user" size={ICON_SIZE} color="black" />
+        <FontAwesome name="bookmark" size={ICON_SIZE} color="black" />
         <Text style={styles.navLabel}>Favourite</Text>
       </NavigationButtons>
       <NavigationButtons
