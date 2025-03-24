@@ -47,16 +47,15 @@ export default function Favourite() {
         )}
         contentContainerStyle={styles.listContent}
       />
-
       <Modal visible={!!selectedPet} animationType="slide">
-        <PetDescription
+            <PetDescription 
             pet={selectedPet}
-            likedPets={likedPets} 
+            likedPets={likedPets}
+            setLikedPets={setLikedPets}
             onClose={() => setSelectedPet(null)} 
             handleLiked = {() => handleLiked(cardIndex)}
-            swipeRight={() => swiperRef.current?.swipeRight()}
-        />
-      </Modal>
+            />
+        </Modal>
     </SafeAreaView>
   );
 }

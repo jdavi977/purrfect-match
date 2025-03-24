@@ -105,24 +105,39 @@ export default function Index() {
         <Modal visible={!!selectedPet} animationType="slide">
             <PetDescription 
             pet={selectedPet}
-            likedPets={likedPets} 
-            onClose={() => setSelectedPet(null)} 
+            likedPets={likedPets}
+            setLikedPets={setLikedPets}
+            onClose={(liked) => {
+              if (liked) {
+                setSelectedPet(null)
+                swiperRef.current?.swipeRight()
+              } else {
+                setSelectedPet(null)
+              }
+            }} 
             handleLiked = {() => handleLiked(cardIndex)}
-            swipeRight={() => swiperRef.current?.swipeRight()}
             />
         </Modal>
     </View>
     <View style={styles.cardButtonsContainer}>
       <CardButton
           style={styles.cardButtons}
-          onTap={() => swiperRef.current?.swipeLeft()}
+          onTap={() => {
+            swiperRef.current?.swipeLeft()
+            //handleDisliked(cardIndex)
+          }
+          }
         >
         <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
       </CardButton>
 
       <CardButton
           style={styles.cardButtons}
-          onTap={() => swiperRef.current?.swipeRight()}
+          onTap={() => {
+            swiperRef.current?.swipeRight()
+            //handleLiked(cardIndex)
+          }
+          }
         >
         <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
       </CardButton>

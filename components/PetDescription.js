@@ -3,10 +3,12 @@ import { Text, View, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from
 import { Image } from 'expo-image';
 import { FontAwesome } from '@expo/vector-icons';
 import CardButton from "../components/CardButtons.js";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const { width, height } = Dimensions.get("screen");
 
-const PetDescription = ({ pet, onClose, handleLiked, swipeRight, likedPets }) => {
+const PetDescription = ({ pet, onClose, handleLiked, swipeRight, likedPets, setLikedPets }) => {
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
@@ -16,6 +18,24 @@ const PetDescription = ({ pet, onClose, handleLiked, swipeRight, likedPets }) =>
         setIsLiked(alreadyLiked);
       }, [pet, likedPets]);
 
+
+      const toggleLike = async () => {
+        if (!pet) return;
+      
+        if (isLiked) {
+          // Unlike the pet
+          const updatedList = likedPets.filter((p) => p.id !== pet.id);
+          setLikedPets(updatedList);
+          await AsyncStorage.setItem("likedPets", JSON.stringify(updatedList));
+          setIsLiked(false);
+        } else {
+          // Like the pet
+          const updatedList = [...likedPets, pet];
+          setLikedPets(updatedList);
+          await AsyncStorage.setItem("likedPets", JSON.stringify(updatedList));
+          setIsLiked(true);
+        }
+      };
     return (
         <View style={styles.container}>
 
@@ -26,7 +46,7 @@ const PetDescription = ({ pet, onClose, handleLiked, swipeRight, likedPets }) =>
 
             {/* Close Button */}
             <View style={styles.closeButtonContainer}>
-                <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                <TouchableOpacity style={styles.closeButton} onPress={() => onClose(isLiked)}>
                     <FontAwesome name="angle-left" size={24} color="black" />
                 </TouchableOpacity>
             </View>
@@ -35,13 +55,7 @@ const PetDescription = ({ pet, onClose, handleLiked, swipeRight, likedPets }) =>
             <View style={styles.cardButtonsContainer}>
                 <CardButton
                     style={styles.cardButtons}
-                    onTap={() => {
-                        if (!isLiked) {
-                        handleLiked();
-                        swipeRight();
-                        setIsLiked(true);
-                    }
-                    }}
+                    onTap={toggleLike}
                 >
                     <FontAwesome 
                     name={isLiked ? "heart" : "heart-o"} 
