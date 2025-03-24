@@ -46,9 +46,6 @@ export default function Index() {
     setDislikedPets((prev) => ([...prev, petData[index]]));
   };
 
-  const tappedCard = (index) => {
-    setSelectedPet(petData[index]); 
-  };
   useEffect(() => {
     const saveLikedPets = async () => {
       try {
@@ -92,27 +89,16 @@ export default function Index() {
               breed = {card.breed}
               image = {card.image}
               location = {card.location}
+              onPress={() => setSelectedPet(card)}
             />
           )}
           verticalSwipe={false}
-//          onSwiping={(x) => {
-//            if (x > 100) {
-//              setSwipeDirection((prev) => (prev !== "right" ? "right" : prev));
-//          } else if (x < -100) {
-//              setSwipeDirection((prev) => (prev !== "left" ? "left" : prev));
-//          } else {
-//              setSwipeDirection((prev) => (prev !== "reset" ? "reset" : prev));
-//          }
-//          }}
-          
-          //onSwiped={() => setSwipeDirection(null)}
           onSwipedRight = {handleLiked}
           onSwipedLeft = {handleDisliked}
           horizontalThreshold={100} 
           cardIndex = {0}
           infinite
           backgroundColor="transparent"
-          onTapCard={tappedCard}
         />
         <Modal visible={!!selectedPet} animationType="slide">
             <PetDescription pet={selectedPet} onClose={() => setSelectedPet(null)} />

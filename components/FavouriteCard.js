@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Modal} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity} from "react-native";
 import { Image } from 'expo-image';
 import { FontAwesome } from "@expo/vector-icons";
 
-const FavouriteCard = ({ name, age, breed, image, onPress }) => {
+const FavouriteCard = ({ name, age, image, onPress }) => {
   return (
     <View style={styles.cardContainer}>
       {/* Card image + heart icon */}

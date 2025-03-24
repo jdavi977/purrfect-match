@@ -1,24 +1,26 @@
 import React from "react";
-import { Text, View, StyleSheet, Dimensions } from "react-native";
+import { Text, View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from "expo-linear-gradient";
 
 const {width, height} = Dimensions.get("screen");
 
-const Card = ({name, age, breed, image, location}) => {
+const Card = ({name, age, breed, image, location, onPress}) => {
     return (
         <View style={styles.container}>
-            <Image source={image} style={styles.image} />
-            <LinearGradient
-                colors={['transparent', 'rgba(0,0,0,.9)']}
-                style={styles.gradient}
-                >
-                    <View style={styles.userContainer}>
-                        <Text style={styles.breedText}>{breed}</Text>
-                        <Text style={styles.nameText}>{name}, {age}</Text>
-                        <Text style={styles.locationText}>{location}</Text>
-                    </View>
-            </LinearGradient>
+            <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
+                <Image source={image} style={styles.image} />
+                <LinearGradient
+                    colors={['transparent', 'rgba(0,0,0,.9)']}
+                    style={styles.gradient}
+                    >
+                        <View style={styles.userContainer}>
+                            <Text style={styles.breedText}>{breed}</Text>
+                            <Text style={styles.nameText}>{name}, {age}</Text>
+                            <Text style={styles.locationText}>{location}</Text>
+                        </View>
+                </LinearGradient>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -27,7 +29,11 @@ const styles = StyleSheet.create({
         container: {
             top: -30,
         },
-
+        imageWrapper: {
+            position: "relative",
+            borderRadius: 12,
+            overflow: "hidden",
+          },
         outlineLeft: {
             borderColor: "red",
             borderWidth: 5,

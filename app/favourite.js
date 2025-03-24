@@ -41,7 +41,6 @@ export default function Favourite() {
           <FavouriteCard
             name={item.name}
             age={item.age}
-            breed={item.breed}
             image={item.image}
             onPress={() => setSelectedPet(item)}
           />
