@@ -6,16 +6,14 @@ import { FontAwesome } from "@expo/vector-icons";
 const FavouriteCard = ({ name, age, image, onPress }) => {
   return (
     <View style={styles.cardContainer}>
-      {/* Card image + heart icon */}
-      <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
-        <Image source={image} style={styles.image} />
-        <FontAwesome name="heart" size={20} color="#FF3366" style={styles.heartIcon} />
-      </TouchableOpacity>
-
-      {/* Pet details */}
-      <Text style={styles.name}>{name}, {age}</Text>
-      <Text style={styles.subText}>Calgary Humane Society · 13 people viewed this pet</Text>
-      <Text style={styles.savedText}>Saved 14 days ago</Text>
+        <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
+          <Image source={image} style={styles.image} />
+          <FontAwesome name="heart" size={20} color="#FF3366" style={styles.heartIcon} />
+          
+        <Text style={styles.name}>{name}, {age}</Text>
+        <Text style={styles.subText}>Calgary Humane Society · 13 people viewed this pet</Text>
+        <Text style={styles.savedText}>Saved 14 days ago</Text>
+        </TouchableOpacity>
     </View>
   );
 };

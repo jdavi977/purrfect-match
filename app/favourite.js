@@ -50,8 +50,11 @@ export default function Favourite() {
 
       <Modal visible={!!selectedPet} animationType="slide">
         <PetDescription
-          pet={selectedPet}
-          onClose={() => setSelectedPet(null)}
+            pet={selectedPet}
+            likedPets={likedPets} 
+            onClose={() => setSelectedPet(null)} 
+            handleLiked = {() => handleLiked(cardIndex)}
+            swipeRight={() => swiperRef.current?.swipeRight()}
         />
       </Modal>
     </SafeAreaView>

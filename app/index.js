@@ -26,6 +26,7 @@ export default function Index() {
   const [likedPets, setLikedPets] = useState([]);
   const [dislikedPets, setDislikedPets] = useState([]);
   const [selectedPet, setSelectedPet] = useState(null);
+  const [cardIndex, setCardIndex] = useState(0);
 
   const router = useRouter();
 
@@ -95,13 +96,20 @@ export default function Index() {
           verticalSwipe={false}
           onSwipedRight = {handleLiked}
           onSwipedLeft = {handleDisliked}
+          onSwiped = {() => setCardIndex((prev) => prev + 1)}
           horizontalThreshold={100} 
           cardIndex = {0}
           infinite
           backgroundColor="transparent"
         />
         <Modal visible={!!selectedPet} animationType="slide">
-            <PetDescription pet={selectedPet} onClose={() => setSelectedPet(null)} />
+            <PetDescription 
+            pet={selectedPet}
+            likedPets={likedPets} 
+            onClose={() => setSelectedPet(null)} 
+            handleLiked = {() => handleLiked(cardIndex)}
+            swipeRight={() => swiperRef.current?.swipeRight()}
+            />
         </Modal>
     </View>
     <View style={styles.cardButtonsContainer}>

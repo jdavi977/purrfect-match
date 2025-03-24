@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity, ScrollView } from "react-native";
 import { Image } from 'expo-image';
 import { FontAwesome } from '@expo/vector-icons';
@@ -6,8 +6,15 @@ import CardButton from "../components/CardButtons.js";
 
 const { width, height } = Dimensions.get("screen");
 
-const PetDescription = ({ pet, onClose }) => {
-    if (!pet) return null; 
+const PetDescription = ({ pet, onClose, handleLiked, swipeRight, likedPets }) => {
+    const [isLiked, setIsLiked] = useState(false);
+
+    useEffect(() => {
+        if (!pet) return;
+    
+        const alreadyLiked = likedPets.some((p) => p.id === pet.id);
+        setIsLiked(alreadyLiked);
+      }, [pet, likedPets]);
 
     return (
         <View style={styles.container}>
@@ -28,9 +35,19 @@ const PetDescription = ({ pet, onClose }) => {
             <View style={styles.cardButtonsContainer}>
                 <CardButton
                     style={styles.cardButtons}
-                    //onTap={() => swiperRef.current?.swipeRight()}
+                    onTap={() => {
+                        if (!isLiked) {
+                        handleLiked();
+                        swipeRight();
+                        setIsLiked(true);
+                    }
+                    }}
                 >
-                    <FontAwesome name="heart-o" size={30} color="red" />
+                    <FontAwesome 
+                    name={isLiked ? "heart" : "heart-o"} 
+                    size={30} 
+                    color="red" />
+
                 </CardButton>
             </View>
 
