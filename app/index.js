@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
   cardButtonsContainer: {
     position: "absolute",
     flexDirection: 'row',
-    bottom: height * 0.06,
+    bottom: height * 0.02,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 110,

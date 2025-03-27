@@ -12,6 +12,8 @@ export default function RootLayout() {
           height: 90,
           paddingBottom: 20,
           borderTopWidth: 0,
+          elevation: 0,   // Android shadow
+          shadowOpacity: 0   // IOS shadow
         },
         tabBarLabelStyle: {
           fontSize: 10,

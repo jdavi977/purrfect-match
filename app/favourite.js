@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import FavouriteCard from "../components/FavouriteCard";
 import { useNavigation } from "expo-router";
 import PetDescription from "../components/PetDescription";
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Favourite() {
   const [likedPets, setLikedPets] = useState([]);
@@ -17,20 +18,25 @@ export default function Favourite() {
         });
   }, [navigation]);
 
-  useEffect(() => {
-    const loadLikedPets = async () => {
-      try {
-        const storedPets = await AsyncStorage.getItem("likedPets");
-        if (storedPets) {
-          setLikedPets(JSON.parse(storedPets));
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadLikedPets = async () => {
+        try {
+          const storedPets = await AsyncStorage.getItem("likedPets");
+          if (storedPets) {
+            setLikedPets(JSON.parse(storedPets));
+          } else {
+            setLikedPets([]); // Clear list if nothing is saved
+          }
+        } catch (error) {
+          console.error("Error loading liked pets:", error);
         }
-      } catch (error) {
-        console.error("Error loading liked pets:", error);
-      }
-    };
-
-    loadLikedPets();
-  }, []);
+      };
+  
+      loadLikedPets();
+    }, [])
+  );
+  
 
   return (
     <SafeAreaView style={styles.container}>
