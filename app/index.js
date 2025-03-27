@@ -142,27 +142,6 @@ export default function Index() {
         <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
       </CardButton>
     </View>
-    <View style={styles.navigationButtonsContainer}>
-      <NavigationButtons
-        style={styles.navigationButtons}
-      >
-        <FontAwesome name="paw" size={ICON_SIZE} color="black" />
-        <Text style={styles.navLabel}>Feed</Text>
-      </NavigationButtons>
-      <NavigationButtons
-        style={styles.navigationButtons}
-        onTap={() => router.push("/favourite")}
-      >
-        <FontAwesome name="bookmark" size={ICON_SIZE} color="black" />
-        <Text style={styles.navLabel}>Favourite</Text>
-      </NavigationButtons>
-      <NavigationButtons
-        style={styles.navigationButtons}
-      >            
-        <FontAwesome name="user" size={ICON_SIZE} color="black" />
-        <Text style={styles.navLabel}>Profile</Text>
-      </NavigationButtons>
-    </View>
     </GestureHandlerRootView>
   );
 }
@@ -207,7 +186,7 @@ const styles = StyleSheet.create({
   cardButtonsContainer: {
     position: "absolute",
     flexDirection: 'row',
-    bottom: height * 0.12,
+    bottom: height * 0.02,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 110,
