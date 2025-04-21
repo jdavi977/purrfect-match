@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, SafeAreaView, Modal } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import FavouriteCard from "../components/FavouriteCard";
+import FavouriteCard from "../../components/FavouriteCard";
 import { useNavigation } from "expo-router";
-import PetDescription from "../components/PetDescription";
+import PetDescription from "../../components/PetDescription";
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function Favourite() {

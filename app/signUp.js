@@ -2,12 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { useRouter } from "expo-router";
 
-export default function IntroScreen() {
+export default function SignUp() {
   const router = useRouter();
-
-  const handleStart = () => {
-    router.push("/questionnaire"); // Go to questionnaire screen
-  };
 
   const goToMainApp = () => {
     router.replace("/(tabs)/"); // Move into tabbed app
@@ -19,12 +15,12 @@ export default function IntroScreen() {
         source={{ uri: "" }} // Replace with your logo
         style={styles.image}
       />
-      <Text style={styles.title}>Find Your{"\n"}Purrfect Match!</Text>
+      <Text style={styles.title}>You're One Step Closer to{"\n"}Your Purrfect Match!</Text>
       <Text style={styles.subtitle}>
-        Answer a few quick questions to discover{"\n"}pets that match your lifestyle and preferences.
+        Sign up now to view profiles of pets that{"\n"}match your preferences and get started on {"\n"}your adoption journey!.
       </Text>
-      <TouchableOpacity onPress={handleStart} style={styles.button}>
-        <Text style={styles.buttonText}>Get started</Text>
+      <TouchableOpacity onPress={goToMainApp} style={styles.button}>
+        <Text style={styles.buttonText}>Sign up</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={goToMainApp} style={styles.accountButton}>
         <Text style={styles.accountButtonText}>I already have an account</Text>
@@ -61,8 +57,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "100%",
     alignItems: "center",
+    marginBottom: 10,
   },
-  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
   accountButtonText: { 
     color: "#007AFF", 
     fontSize: 16, 
@@ -78,4 +74,5 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
+  buttonText: { color: "#fff", fontSize: 16, fontWeight: "600" },
 });
