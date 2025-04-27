@@ -2,10 +2,11 @@ import React from "react";
 import { Text, View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { Image } from 'expo-image';
 import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome, Entypo } from '@expo/vector-icons';
 
 const {width, height} = Dimensions.get("screen");
 
-const Card = ({name, age, breed, image, location, onPress}) => {
+const Card = ({name, age, breed, image, location, onPress, gender, id}) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
@@ -15,9 +16,19 @@ const Card = ({name, age, breed, image, location, onPress}) => {
                     style={styles.gradient}
                     >
                         <View style={styles.userContainer}>
-                            <Text style={styles.breedText}>{breed}</Text>
-                            <Text style={styles.nameText}>{name}, {age}</Text>
-                            <Text style={styles.locationText}>{location}</Text>
+                            <Text style={styles.topText}>
+                                <Text style={styles.nameText}>{name}</Text>, {age} years</Text>
+                            <Text style={styles.descriptionText}>{gender} • {breed} • {id}</Text>
+                            <View style={styles.preferenceContainer}>
+                                <FontAwesome name="sliders" size={16} color="#007AFF" />
+                                <Text style={styles.preferenceText}>
+                                Matched 5+ Preferences
+                                </Text>
+                            </View>
+                            <Text style={styles.locationText}>
+                                <Entypo name="location-pin" size={16} color="#007AFF" />
+                                {location}
+                                </Text>
                         </View>
                 </LinearGradient>
             </TouchableOpacity>
@@ -31,7 +42,7 @@ const styles = StyleSheet.create({
         },
         imageWrapper: {
             position: "relative",
-            borderRadius: 12,
+            borderRadius: 10,
             overflow: "hidden",
           },
         outlineLeft: {
@@ -59,8 +70,8 @@ const styles = StyleSheet.create({
         },
         image: {
             width: width * 0.9,
-            height: height * 0.67,
-            borderRadius: 20,
+            height: height * 0.70,
+            borderRadius: 18,
         },
         gradient: {
             position: "absolute",
@@ -71,20 +82,35 @@ const styles = StyleSheet.create({
             borderBottomRightRadius: 20,
             borderBottomLeftRadius: 20,
         },
-        nameText: {
-            fontSize: 27,
-            color: "yellow",
-        },
-        breedText: {
-            fontSize: 12,
+        topText: {
+            fontSize: 30,
             color: "white",
-            fontWeight: 300,
+        },
+        nameText: {
+            fontSize: 30,
+            color: "white",
+            fontWeight: "bold",
+        },
+        preferenceText: {
+            marginLeft: 3, 
+            marginTop: 3,
+            fontSize: 13,
+            color: "white",
         },
         locationText: {
-            fontSize: 14,
+            marginTop: 3,
+            fontSize: 13,
             color: "white",
-            height: 30,
+            height: 60,
         },
+        descriptionText: {
+            fontSize: 18,
+            color: "white",
+        },
+        preferenceContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+        }
 });
 
 export default Card;

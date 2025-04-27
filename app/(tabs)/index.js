@@ -1,13 +1,12 @@
 import { useNavigation } from "expo-router";
 import React, {useState, useEffect, useRef} from "react";
-import { View, StyleSheet, Modal, Dimensions, Text } from "react-native";
+import { View, StyleSheet, Modal, Dimensions, Text, TouchableOpacity } from "react-native";
 import Card from "../../components/Card.js";
 import {petData as petDataArray} from "../../utils/petData.js";
 import Swiper from "react-native-deck-swiper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../../components/CardButtons.js";
-import NavigationButtons from "../../components/NavigationButtons.js"
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Entypo, AntDesign } from '@expo/vector-icons';
 import PetDescription from "../../components/PetDescription.js";
 import {useRouter} from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -70,15 +69,32 @@ export default function Index() {
     }
   }, [petData.length]);
 
-  useEffect(() => {
-    navigation.setOptions({
-       title: "Browse Pets",
-       headerTitleAlign: "center"
-        });
-  }, [navigation]);
-
   return (
     <GestureHandlerRootView style={styles.container}>
+      <View style={styles.headerContainer}>
+
+      <View style={styles.topRow}>
+        <Text style={styles.title}>Browse Pets</Text>
+        <TouchableOpacity style={styles.filterButton}>
+          <FontAwesome name="sliders" size={20} color="black" />
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.locationContainer}>
+        <Entypo name="location-pin" size={16} color="#FF9900" />
+        <Text style={styles.locationText}>Calgary, Alberta</Text>
+      </View>
+      </View>
+      
+      <View style={styles.returnButtonContainer}>
+        <TouchableOpacity>
+          <FontAwesome 
+            name={"undo"} 
+            size={16} 
+            color="white" />
+          </TouchableOpacity>
+      </View>
+
       <View style={styles.subContainer}>
         <Swiper
           ref = {swiperRef}
@@ -90,6 +106,8 @@ export default function Index() {
               breed = {card.breed}
               image = {card.image}
               location = {card.location}
+              gender = {card.gender}
+              id = {card.id}
               onPress={() => setSelectedPet(card)}
             />
           )}
@@ -121,25 +139,23 @@ export default function Index() {
     </View>
     <View style={styles.cardButtonsContainer}>
       <CardButton
-          style={styles.cardButtons}
+          style={styles.dislikeButton}
           onTap={() => {
             swiperRef.current?.swipeLeft()
-            //handleDisliked(cardIndex)
           }
           }
         >
-        <FontAwesome name="thumbs-o-down" size={ICON_SIZE} color="black" />
+        <AntDesign name="close" size={ICON_SIZE} color="orange" />
       </CardButton>
 
       <CardButton
-          style={styles.cardButtons}
+          style={styles.likeButton}
           onTap={() => {
             swiperRef.current?.swipeRight()
-            //handleLiked(cardIndex)
           }
           }
         >
-        <FontAwesome name="heart-o" size={ICON_SIZE} color="red" />
+        <FontAwesome name="heart-o" size={ICON_SIZE} color="white" />
       </CardButton>
     </View>
     </GestureHandlerRootView>
@@ -148,6 +164,43 @@ export default function Index() {
 
 
 const styles = StyleSheet.create({
+  // Header 
+  headerContainer: {
+    backgroundColor: "white",
+    paddingTop: 10,
+    paddingHorizontal: 20,
+  },
+  
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  
+  filterButton: {
+    backgroundColor: '#eee',
+    padding: 7,
+    borderRadius: 20,
+    marginLeft: 210,  
+  },
+  
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  
+  locationText: {
+    fontSize: 12,
+    color: '#888888',
+    marginLeft: 4,
+  },
+
+
   container: {
     flex: 1, // Takes full available height
     justifyContent: "center", // Centers vertically
@@ -161,36 +214,40 @@ const styles = StyleSheet.create({
     width: "100%",
     maxWidth: "100%",
   },
-  cardButtons: {
-    height: 60,
-    borderRadius: 40,
-    aspectRatio: 1,
+  dislikeButton: {
+    height: 53,            // Less tall
+    width: 170,            // Wider
+    borderRadius: 12,      // Small rounded corners
     backgroundColor: "white",
-    elevation: 4,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: 'black',
     shadowOpacity: 0.1,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
   },
-  navigationButtons: {
-    height: 60,
-    aspectRatio: 1,
-    backgroundColor: "white",
+  likeButton: {
+    height: 53,            // Less tall
+    width: 170,            // Wider
+    borderRadius: 12,      // Small rounded corners
+    backgroundColor: "orange",
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: 'black',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
   },
+  
   cardButtonsContainer: {
     position: "absolute",
     flexDirection: 'row',
-    bottom: height * 0.02,
+    bottom: height * 0.035,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 110,
-    position: 'absolute',
+    gap: 10,
     zIndex: 10,
   }, 
   navigationButtonsContainer: {
@@ -213,4 +270,18 @@ const styles = StyleSheet.create({
   color: '#444',
   marginTop: 4,
 },
+returnButtonContainer: {
+  position: "absolute",
+  flexDirection: 'row',
+  top: height * 0.125,
+  right: 40,
+  alignItems: 'center',
+  justifyContent: 'center',
+  position: 'absolute',
+  zIndex: 10,
+  borderRadius: 18,
+  height: 37,
+  width: 37,
+  backgroundColor: "grey"
+}, 
 });
