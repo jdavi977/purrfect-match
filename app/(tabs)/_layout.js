@@ -1,12 +1,13 @@
 import { Tabs } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 
-const ICON_SIZE = 30;
+const ICON_SIZE = 27;
 
 export default function RootLayout() {
   return (
     <Tabs
       screenOptions={{
+        headerShown: false,
         tabBarInactiveTintColor: "grey",
         tabBarStyle: {
           height: 90,
@@ -25,8 +26,8 @@ export default function RootLayout() {
       <Tabs.Screen
        name="index"
        options={{
-          title: "feed",
-          tabBarIcon: ({ color, size}) => (
+          title: "Browse",
+          tabBarIcon: ({ color }) => (
             <FontAwesome name="paw" size={ICON_SIZE} color={color}/>
           ),
         }}
@@ -35,7 +36,7 @@ export default function RootLayout() {
        name="favourite"
        options={{
           title: "Favourites",
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color }) => (
             <FontAwesome name="bookmark" size={ICON_SIZE} color={color}/>
           ),
           }}
@@ -43,8 +44,8 @@ export default function RootLayout() {
       <Tabs.Screen
        name="profile"
        options={{
-         title: "Profile",
-         tabBarIcon: ({ color, size }) => (
+         title: "Account",
+         tabBarIcon: ({ color }) => (
           <FontAwesome name="user" size={ICON_SIZE} color={color}/>
          ),
         }}

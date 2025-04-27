@@ -7,6 +7,7 @@ export const petData = [
         weight: "3kg",
         gender: "Male",
         location: "Calgary Humane Society",
+        id: "132539",
         image: require("../assets/images/bulldog.png")
     },
     {
@@ -16,7 +17,7 @@ export const petData = [
         breed: "Golden Doodle",
         weight: "4kg",
         gender: "Male",
-
+        id: "132539",
         location: "Calgary Humane Society",
         image: require("../assets/images/Perry.png")
     },
@@ -27,6 +28,7 @@ export const petData = [
         breed: "Golden Retreiver",
         weight: "5kg",
         gender: "Female",
+        id: "132539",
         location: "Calgary Humane Society",
         image: require("../assets/images/Coco.png")
     }
