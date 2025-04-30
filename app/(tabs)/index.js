@@ -72,18 +72,18 @@ export default function Index() {
   return (
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.headerContainer}>
+        
+        <View style={styles.topRow}>
+          <Text style={styles.title}>Browse Pets</Text>
+          <TouchableOpacity style={styles.filterButton}>
+            <FontAwesome name="sliders" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.topRow}>
-        <Text style={styles.title}>Browse Pets</Text>
-        <TouchableOpacity style={styles.filterButton}>
-          <FontAwesome name="sliders" size={20} color="black" />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.locationContainer}>
-        <Entypo name="location-pin" size={16} color="#FF9900" />
-        <Text style={styles.locationText}>Calgary, Alberta</Text>
-      </View>
+        <View style={styles.locationContainer}>
+          <Entypo name="location-pin" size={16} color="#FF9900" />
+          <Text style={styles.locationText}>Calgary, Alberta</Text>
+        </View>
       </View>
       
       <View style={styles.returnButtonContainer}>

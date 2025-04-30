@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, SafeAreaView, Modal } from "react-native";
+import { FlatList, StyleSheet, SafeAreaView, Modal, View, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FavouriteCard from "../../components/FavouriteCard";
 import { useNavigation } from "expo-router";
 import PetDescription from "../../components/PetDescription";
 import { useFocusEffect } from '@react-navigation/native';
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function Favourite() {
   const [likedPets, setLikedPets] = useState([]);
@@ -40,6 +41,22 @@ export default function Favourite() {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.headerContainer}>
+        <View style={styles.topRow}>
+          <Text style={styles.title}>Favourite List</Text>
+          <TouchableOpacity style={styles.filterButton}>
+            <FontAwesome name="sliders" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.layoutContainer}>
+        <TouchableOpacity style={styles.leftFilter}>
+          <FontAwesome name="heart" size={20} color="#FF3366" style={styles.heartIcon} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.rightFilter}>
+          <FontAwesome name="heart" size={20} color="#FF3366" style={styles.heartIcon} />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={likedPets}
         keyExtractor={(item) => item.id.toString()}
@@ -67,5 +84,38 @@ export default function Favourite() {
 }
 
 const styles = StyleSheet.create({
-
+  title: {
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  topRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  filterButton: {
+    backgroundColor: '#eee',
+    padding: 7,
+    borderRadius: 20,
+    marginLeft: 210,  
+  },
+  headerContainer: {
+    backgroundColor: "white",
+    paddingTop: 10,
+    paddingHorizontal: 20,
+  },
+  layoutContainer: {
+    flexDirection: 'row',
+  },
+  leftFilter: {
+    backgroundColor: "white",
+    padding: 7,
+  },
+  rightFilter: {
+    backgroundColor: "white",
+    padding: 7,
+  },
+  container: {
+    backgroundColor: "white",
+  }
 })
