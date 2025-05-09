@@ -9,6 +9,7 @@ import { Image } from "expo-image";
 import { FontAwesome } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get('window');
+const [ viewType, setViewType ] = useState("list");
 
 
 export default function Favourite() {
@@ -46,18 +47,18 @@ export default function Favourite() {
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.iconPadding}>
             <Image 
               source={require("../../assets/images/Left.png")}
-              style={{ width: width * 0.02, height: height * 0.025, marginLeft: width * 0.02}}
+              style={styles.backArrowIcon}
               
             />
           </TouchableOpacity>
           <Text style={styles.title}>My Paw-tential Matches</Text>
-          <TouchableOpacity>
+          <TouchableOpacity style={styles.iconPadding}>
             <Image
               source={require("../../assets/images/Share.png")}
-              style={{ width: width * 0.045, height: height * 0.020, marginRight: width * 0.02}}
+              style={styles.shareIcon}
             />
           </TouchableOpacity>
         </View>
@@ -68,6 +69,7 @@ export default function Favourite() {
             <View style={styles.topRight}>
               <TouchableOpacity
                 style={styles.listIcon}
+                onPress={() => setViewType("list")}
               >
                 <Image 
                   source={require("../../assets/images/List.png")}
@@ -77,6 +79,7 @@ export default function Favourite() {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.gridIcon}
+                onPress={() => setViewType("grid")}
               >
                 <Image
                   source={require("../../assets/images/Grid.png")}
@@ -103,6 +106,7 @@ export default function Favourite() {
               id={item.id}
               breed={item.breed}
               gender={item.gender}
+              viewType={viewType}
             />
           )}
           contentContainerStyle={styles.listContent}
@@ -140,6 +144,21 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: "#F6F6F6",
     marginVertical: 8
+  },
+  iconPadding: {
+    padding: width * 0.02,
+    backgroundColor: "#e8e8e8",
+    borderRadius: 9999,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  backArrowIcon: {
+    height: width * 0.05,
+    width: width * 0.05
+  },
+  shareIcon: {
+    height: width * 0.05,
+    width: width * 0.05
   },
   topRow: {
     flexDirection: "row",

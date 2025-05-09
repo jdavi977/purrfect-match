@@ -6,10 +6,15 @@ import { FontAwesome } from "@expo/vector-icons";
 const { width, height } = Dimensions.get('window');
 
 
-const FavouriteCard = ({ name, age, image, onPress, breed, id, gender }) => {
+const FavouriteCard = ({ name, age, image, onPress, breed, id, gender, viewType }) => {
+  console.log(viewType);
+
+  const cardStyle = viewType === "grid" ? styles.gridCardContainer : styles.listCardContainer;
+  const imageWrapperStyle = viewType === "grid" ? styles.gridImageWrapper : styles.listImageWrapper;
+
   return (
-    <View style={styles.cardContainer}>
-        <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
+    <View style={cardStyle}>
+        <TouchableOpacity style={imageWrapperStyle} onPress={onPress}>
           <Image source={image} style={styles.image} />
           <FontAwesome name="heart" size={13} color="#FF3366" style={styles.heartIcon} />
         <View style={styles.infoText}>
@@ -31,11 +36,11 @@ const FavouriteCard = ({ name, age, image, onPress, breed, id, gender }) => {
 };
 
 const styles = StyleSheet.create({
-  cardContainer: {
+  listCardContainer: {
     marginVertical: 2,
     paddingHorizontal: 16,
   },
-  imageWrapper: {
+  listImageWrapper: {
     position: "relative",
     borderRadius: 12,
     overflow: "hidden",
