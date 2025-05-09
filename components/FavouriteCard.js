@@ -1,18 +1,30 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions} from "react-native";
 import { Image } from 'expo-image';
 import { FontAwesome } from "@expo/vector-icons";
 
-const FavouriteCard = ({ name, age, image, onPress }) => {
+const { width, height } = Dimensions.get('window');
+
+
+const FavouriteCard = ({ name, age, image, onPress, breed, id, gender }) => {
   return (
     <View style={styles.cardContainer}>
         <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
           <Image source={image} style={styles.image} />
-          <FontAwesome name="heart" size={20} color="#FF3366" style={styles.heartIcon} />
-          
-        <Text style={styles.name}>{name}, {age}</Text>
-        <Text style={styles.subText}>Calgary Humane Society · 13 people viewed this pet</Text>
-        <Text style={styles.savedText}>Saved 14 days ago</Text>
+          <FontAwesome name="heart" size={13} color="#FF3366" style={styles.heartIcon} />
+        <View style={styles.infoText}>
+          <View style={styles.topRow}>
+            <Text style={styles.name}>{name},</Text>
+            <Text style={styles.age}>{age}</Text>
+          </View>
+          <Text style={styles.middleInfo}>{gender}</Text>
+          <Text style={styles.middleInfo}>{breed}</Text>
+          <Text style={styles.middleInfo}>{id}</Text>
+        <View style={styles.shelterInfo}>
+          <Image style={styles.locationIcon} source={require("../assets/images/Location.png")}/>
+          <Text style={styles.shelterText}>Calgary Humane Society</Text>
+        </View>
+        </View>
         </TouchableOpacity>
     </View>
   );
@@ -20,17 +32,22 @@ const FavouriteCard = ({ name, age, image, onPress }) => {
 
 const styles = StyleSheet.create({
   cardContainer: {
-    marginVertical: 12,
+    marginVertical: 2,
     paddingHorizontal: 16,
   },
   imageWrapper: {
     position: "relative",
     borderRadius: 12,
     overflow: "hidden",
+    flexDirection: "row",
+    padding: 6,
+    borderColor: "#E5E5E5",
+    borderWidth: 1,
   },
   image: {
     width: "100%",
-    height: 180,
+    height: height * 0.15,
+    width: width * 0.325,
     borderRadius: 12,
   },
   heartIcon: {
@@ -38,20 +55,46 @@ const styles = StyleSheet.create({
     top: 12,
     right: 12,
   },
+  topRow: {
+    flexDirection: "row",
+  },
   name: {
     fontWeight: "600",
+    color: "#0c7dd6",
     fontSize: 16,
-    marginTop: 8,
   },
-  subText: {
-    fontSize: 12,
-    color: "#666",
-    marginTop: 2,
+  age: {
+    fontSize: 16,
+    marginLeft: width * 0.01,
+    color: "#8e8e8e",
+  },
+  middleInfo: {
+    color: "#333333"
   },
   savedText: {
     fontSize: 12,
     color: "#999",
     marginTop: 2,
+  },
+  nameText: {
+    color: "grey"
+  },
+  infoText: {
+    paddingLeft: width * 0.03,
+  },
+  locationIcon: {
+    height: height * 0.017,
+    width: width * 0.035,
+    color: "#d7a100"
+  },
+  shelterInfo: {
+    flexDirection: "row",
+    marginTop: height * 0.06
+  },
+  shelterText: {
+    fontSize: 12,
+    color: "#666",
+    marginLeft: width * 0.01,
   },
 });
 

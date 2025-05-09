@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, SafeAreaView, Modal, View, Text, TouchableOpacity } from "react-native";
+import { FlatList, StyleSheet, SafeAreaView, Modal, View, Text, TouchableOpacity, Dimensions } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FavouriteCard from "../../components/FavouriteCard";
 import { useNavigation } from "expo-router";
 import PetDescription from "../../components/PetDescription";
 import { useFocusEffect } from '@react-navigation/native';
 import { Image } from "expo-image";
+import { FontAwesome } from "@expo/vector-icons";
+
+const { width, height } = Dimensions.get('window');
+
 
 export default function Favourite() {
   const [likedPets, setLikedPets] = useState([]);
@@ -45,7 +49,7 @@ export default function Favourite() {
           <TouchableOpacity>
             <Image 
               source={require("../../assets/images/Left.png")}
-              style={{ width: 22, height: 22}}
+              style={{ width: width * 0.02, height: height * 0.025, marginLeft: width * 0.02}}
               
             />
           </TouchableOpacity>
@@ -53,7 +57,7 @@ export default function Favourite() {
           <TouchableOpacity>
             <Image
               source={require("../../assets/images/Share.png")}
-              style={{ width: 18, height: 18}}
+              style={{ width: width * 0.045, height: height * 0.020, marginRight: width * 0.02}}
             />
           </TouchableOpacity>
         </View>
@@ -82,6 +86,10 @@ export default function Favourite() {
               </TouchableOpacity>
             </View>
           </View>
+          <View style={styles.petSaved}>
+            <FontAwesome name="heart" size={13} color="#FF3366" style={styles.heartIcon} />
+            <Text style={styles.petSavedText}>{likedPets.length} pets saved</Text>
+          </View>
         </View>
         <FlatList
           data={likedPets}
@@ -92,6 +100,9 @@ export default function Favourite() {
               age={item.age}
               image={item.image}
               onPress={() => setSelectedPet(item)}
+              id={item.id}
+              breed={item.breed}
+              gender={item.gender}
             />
           )}
           contentContainerStyle={styles.listContent}
@@ -117,12 +128,13 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingTop: 25,
+      paddingTop: height * 0.045,
       paddingLeft: 15,
       paddingRight: 15,
   },
   title: {
-    fontWeight: "bold",
+    fontWeight: 600,
+    fontSize: 19,
   },
   borderLine: {
     height: 2,
@@ -132,36 +144,54 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 18
   },
   topRight: {
     flexDirection: "row",
     alignItems: "center",
-    paddingLeft: 135,
+    marginLeft: width * 0.38,
+  },
+  heartIcon: {
+    marginTop: height * 0.005
+  },
+  petSaved: {
+    flexDirection: "row",
+  },
+  petSavedText: {
+    marginLeft: width * 0.01,
+    fontWeight: 500,
+    color: "#a4a4a4",
   },
   listIcon: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#E5E5E5",
     paddingRight: 5,
-    paddingLeft: 15,
+    paddingLeft: 9,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     borderWidth: 1,
     borderColor: "#E5E5E5"
-
+  },
+    iconText: {
+    paddingLeft: 8,
+    fontSize: 16,
   },
   gridIcon: {
     flexDirection: "row",
     alignItems: "center",
     paddingLeft: 5,
-    paddingRight: 15,
+    paddingRight: 9,
     borderWidth: 1,
     borderColor: "#E5E5E5",
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10
   },
-  iconText: {
-    paddingLeft: 3,
+  gridText: {
+    fontSize: 16,
+  },
+  favouriteContainer: {
+    paddingHorizontal: width * 0.065,
+    paddingTop: height * 0.0125,
+    paddingBottom: height * 0.03
   }
 })
