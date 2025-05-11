@@ -1,32 +1,39 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions} from "react-native";
 import { Image } from 'expo-image';
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Entypo } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get('window');
 
 
 const FavouriteCard = ({ name, age, image, onPress, breed, id, gender, viewType }) => {
-  console.log(viewType);
+  console.log("View", viewType);
 
   const cardStyle = viewType === "grid" ? styles.gridCardContainer : styles.listCardContainer;
   const imageWrapperStyle = viewType === "grid" ? styles.gridImageWrapper : styles.listImageWrapper;
+  const heartIconStyle = viewType === "grid" ? styles.gridHeartIcon : styles.listHeartIcon;
+  const imageStyle = viewType === "grid" ? styles.gridImage : styles.listImage;
+  const nameStyle = viewType === "grid" ? styles.gridName : styles.listName;
+  const infoTextStyle = viewType === "grid" ? styles.gridInfoText : styles.listInfoText;
+
+
+
 
   return (
     <View style={cardStyle}>
         <TouchableOpacity style={imageWrapperStyle} onPress={onPress}>
-          <Image source={image} style={styles.image} />
-          <FontAwesome name="heart" size={13} color="#FF3366" style={styles.heartIcon} />
-        <View style={styles.infoText}>
-          <View style={styles.topRow}>
-            <Text style={styles.name}>{name},</Text>
-            <Text style={styles.age}>{age}</Text>
+          <Image source={image} style={imageStyle} />
+          <FontAwesome name="heart" size={13} color="#FF3366" style={heartIconStyle} />
+        <View style={infoTextStyle}>
+          <Text style={nameStyle}>{name}</Text>
+          <View style={styles.listTop}>
+            <Text style={styles.middleInfo}>{age}/</Text>
+            <Text style={styles.middleInfo}>{gender}</Text>
           </View>
-          <Text style={styles.middleInfo}>{gender}</Text>
           <Text style={styles.middleInfo}>{breed}</Text>
           <Text style={styles.middleInfo}>{id}</Text>
         <View style={styles.shelterInfo}>
-          <Image style={styles.locationIcon} source={require("../assets/images/Location.png")}/>
+          <Entypo name="location" size={14} color="#ff9800" style={styles.locationIcon}/>
           <Text style={styles.shelterText}>Calgary Humane Society</Text>
         </View>
         </View>
@@ -46,35 +53,74 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     flexDirection: "row",
     padding: 6,
-    borderColor: "#E5E5E5",
-    borderWidth: 1,
+    borderColor: "#E8E8E8",
+    borderWidth: 2,
   },
-  image: {
-    width: "100%",
+  gridCardContainer: {
+    marginVertical: 2,
+    width: width * 0.42
+  },
+  gridImageWrapper: {
+    position: "relative",
+    borderRadius: 12,
+    overflow: "hidden",
+    borderColor: "#E8E8E8",
+    borderWidth: 2,
+    marginBottom: height * 0.01,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  listImage: {
     height: height * 0.15,
     width: width * 0.325,
     borderRadius: 12,
   },
-  heartIcon: {
-    position: "absolute",
-    top: 12,
-    right: 12,
+  gridImage: {
+    width: "100%",
+    height: height * 0.225
   },
-  topRow: {
+  listHeartIcon: {
+    position: "absolute",
+    top: 6,
+    right: 10,
+    padding: 5,
+    backgroundColor: "#e8e8e8",
+    borderRadius: 999,
+  },
+  gridHeartIcon: {
+    position: "absolute",
+    top: height * 0.195,
+    right: 6,
+    padding: 5,
+    backgroundColor: "#e8e8e8",
+    borderRadius: 999,
+  },
+  listTop: {
     flexDirection: "row",
   },
-  name: {
+  listName: {
     fontWeight: "600",
     color: "#0c7dd6",
     fontSize: 16,
+    marginRight: width * 0.01,
+  },
+  gridName: {
+    fontWeight: "600",
+    color: "#0c7dd6",
+    fontSize: 16,
+    marginRight: width * 0.01,
+    marginTop: width * 0.03,
   },
   age: {
     fontSize: 16,
-    marginLeft: width * 0.01,
     color: "#8e8e8e",
   },
   middleInfo: {
-    color: "#333333"
+    color: "#333333",
+    marginTop: width * 0.005,
+    color: "black",
+    fontWeight: 500,
+    fontSize: 13
   },
   savedText: {
     fontSize: 12,
@@ -84,8 +130,10 @@ const styles = StyleSheet.create({
   nameText: {
     color: "grey"
   },
-  infoText: {
+  listInfoText: {
     paddingLeft: width * 0.03,
+  },
+  gridInfoText: {
   },
   locationIcon: {
     height: height * 0.017,
@@ -94,12 +142,13 @@ const styles = StyleSheet.create({
   },
   shelterInfo: {
     flexDirection: "row",
-    marginTop: height * 0.06
+    marginTop: height * 0.04,
   },
   shelterText: {
-    fontSize: 12,
+    fontSize: 11,
     color: "#666",
     marginLeft: width * 0.01,
+    fontWeight: 500
   },
 });
 

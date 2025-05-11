@@ -6,13 +6,13 @@ import { useNavigation } from "expo-router";
 import PetDescription from "../../components/PetDescription";
 import { useFocusEffect } from '@react-navigation/native';
 import { Image } from "expo-image";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, MaterialCommunityIcons, } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get('window');
-const [ viewType, setViewType ] = useState("list");
 
 
 export default function Favourite() {
+  const [ viewType, setViewType ] = useState("list");
   const [likedPets, setLikedPets] = useState([]);
   const navigation = useNavigation();
   const [selectedPet, setSelectedPet] = useState(null);
@@ -68,23 +68,21 @@ export default function Favourite() {
             <Text style={styles.title}>Favourites</Text>
             <View style={styles.topRight}>
               <TouchableOpacity
-                style={styles.listIcon}
+                style={[styles.iconBase,
+                viewType === "list" ? styles.activeIcon : styles.inactiveIcon, styles.listIcon,
+                ]}
                 onPress={() => setViewType("list")}
               >
-                <Image 
-                  source={require("../../assets/images/List.png")}
-                  style={{ width: 15, height: 15}}
-                />
+                <FontAwesome5 name="list" size={13} color="#0961A7" style={{marginTop: 4}}/>
                 <Text style={styles.iconText}>List</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={styles.gridIcon}
+                style={[styles.iconBase,
+                viewType === "grid" ? styles.activeIcon : styles.inactiveIcon, styles.gridIcon,
+                ]}
                 onPress={() => setViewType("grid")}
               >
-                <Image
-                  source={require("../../assets/images/Grid.png")}
-                  style={{ width: 15, height: 15}}
-                />
+                <MaterialCommunityIcons name="grid-large" size={16} color="#0961A7" style={{marginTop: 2}}/>
                 <Text style={styles.iconText}>Grid</Text>
               </TouchableOpacity>
             </View>
@@ -95,8 +93,13 @@ export default function Favourite() {
           </View>
         </View>
         <FlatList
+          key={viewType}
           data={likedPets}
           keyExtractor={(item) => item.id.toString()}
+          numColumns={viewType === "grid" ? 2 : 1}
+          columnWrapperStyle={
+            viewType === "grid" ? { justifyContent: "space-between", paddingHorizontal: width * 0.055, } : null
+          }
           renderItem={({ item }) => (
             <FavouriteCard
               name={item.name}
@@ -127,6 +130,7 @@ export default function Favourite() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#FFFFFF"
   },
   headerContainer: {
       flexDirection: "row",
@@ -167,7 +171,7 @@ const styles = StyleSheet.create({
   topRight: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: width * 0.38,
+    marginLeft: width * 0.375,
   },
   heartIcon: {
     marginTop: height * 0.005
@@ -180,33 +184,35 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     color: "#a4a4a4",
   },
-  listIcon: {
+  iconBase: {
+    borderWidth: 1.5,
+    borderColor: "#b5dcfb",
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#E5E5E5",
-    paddingRight: 5,
+    backgroundColor: "#A4A4A4",
+    paddingRight: 6,
     paddingLeft: 9,
+    paddingVertical: 3
+  },
+  listIcon: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
-    borderWidth: 1,
-    borderColor: "#E5E5E5"
   },
-    iconText: {
-    paddingLeft: 8,
-    fontSize: 16,
+  iconText: {
+    paddingLeft: 6,
+    fontSize: 14,
+    color: "#0961A7",
+    fontWeight: 500
   },
   gridIcon: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingLeft: 5,
-    paddingRight: 9,
-    borderWidth: 1,
-    borderColor: "#E5E5E5",
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10
   },
-  gridText: {
-    fontSize: 16,
+  activeIcon: {
+    backgroundColor: "#b5dcfb"
+  },
+  inactiveIcon: {
+    backgroundColor: "white"
   },
   favouriteContainer: {
     paddingHorizontal: width * 0.065,
