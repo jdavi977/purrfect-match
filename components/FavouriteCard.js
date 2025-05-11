@@ -1,4 +1,3 @@
-import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions} from "react-native";
 import { Image } from 'expo-image';
 import { FontAwesome, Entypo } from "@expo/vector-icons";
@@ -6,7 +5,7 @@ import { FontAwesome, Entypo } from "@expo/vector-icons";
 const { width, height } = Dimensions.get('window');
 
 
-const FavouriteCard = ({ name, age, image, onPress, breed, id, gender, viewType }) => {
+const FavouriteCard = ({ name, age, image, onPress, breed, id, gender, viewType, location }) => {
   console.log("View", viewType);
 
   const cardStyle = viewType === "grid" ? styles.gridCardContainer : styles.listCardContainer;
@@ -32,12 +31,12 @@ const FavouriteCard = ({ name, age, image, onPress, breed, id, gender, viewType 
           </View>
           <Text style={styles.middleInfo}>{breed}</Text>
           <Text style={styles.middleInfo}>{id}</Text>
-        <View style={styles.shelterInfo}>
-          <Entypo name="location" size={14} color="#ff9800" style={styles.locationIcon}/>
-          <Text style={styles.shelterText}>Calgary Humane Society</Text>
+          <View style={styles.shelterInfo}>
+            <Entypo name="location" size={14} color="#ff9800" style={styles.locationIcon}/>
+            <Text style={styles.shelterText}>{location}</Text>
+          </View>
         </View>
-        </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -68,7 +67,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     marginBottom: height * 0.01,
     justifyContent: "center",
-    alignItems: "center",
   },
   listImage: {
     height: height * 0.15,
@@ -131,9 +129,10 @@ const styles = StyleSheet.create({
     color: "grey"
   },
   listInfoText: {
-    paddingLeft: width * 0.03,
+    marginLeft: width * 0.035,
   },
   gridInfoText: {
+    marginLeft: width * 0.045,
   },
   locationIcon: {
     height: height * 0.017,

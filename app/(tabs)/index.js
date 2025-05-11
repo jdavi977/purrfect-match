@@ -13,7 +13,7 @@ import { petData as petDataArray } from "../../utils/petData.js";
 import Swiper from "react-native-deck-swiper";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CardButton from "../../components/CardButtons.js";
-import { FontAwesome, Entypo, AntDesign } from "@expo/vector-icons";
+import { FontAwesome, EvilIcons, AntDesign } from "@expo/vector-icons";
 import PetDescription from "../../components/PetDescription.js";
 import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,7 +22,7 @@ import { getRescueGroupsPets } from "../../api/api-conn.js";
 
 const { width, height } = Dimensions.get("screen");
 
-const ICON_SIZE = 28;
+const ICON_SIZE = 26;
 
 export default function Index() {
   const navigation = useNavigation();
@@ -72,6 +72,22 @@ export default function Index() {
     setDislikedPets((prev) => [...prev, petData[index]]);
   };
 
+  // Need to fix
+  const handleUndo = () => {
+  if (cardIndex > 0) {
+    swiperRef.current?.swipeBack();
+    setCardIndex((prev) => Math.max(prev - 1, 0));
+      console.log(likedPets)
+      console.log(dislikedPets)
+    const petToRemove = petData[cardIndex - 1];
+    setLikedPets((prev) => prev.filter((p) => p.id !== petToRemove.id));
+    setDislikedPets((prev) => prev.filter((p) => p.id !== petToRemove.id));
+      console.log("liked after: ", likedPets)
+      console.log("disliked after: ", dislikedPets)
+  }
+};
+
+
   useEffect(() => {
     const saveLikedPets = async () => {
       try {
@@ -99,23 +115,24 @@ export default function Index() {
     <GestureHandlerRootView style={styles.container}>
       <View style={styles.headerContainer}>
         <View style={styles.topRow}>
-          <Text style={styles.title}>Browse Pets</Text>
+          <Text style={styles.title}><Text style={{color: "#0c7dd6"}}>1223</Text> Happy Matches</Text>
           <TouchableOpacity style={styles.filterButton}>
             <FontAwesome name="sliders" size={20} color="black" />
           </TouchableOpacity>
         </View>
 
         <View style={styles.locationContainer}>
-          <Entypo name="location-pin" size={16} color="#FF9900" />
+          <FontAwesome name="location-arrow" size={18} color="#FF9900" />
           <Text style={styles.locationText}>Calgary, Alberta</Text>
         </View>
       </View>
 
       <View style={styles.returnButtonContainer}>
-        <TouchableOpacity>
-          <FontAwesome name={"undo"} size={16} color="white" />
+        <TouchableOpacity onPress={handleUndo}>
+          <EvilIcons name={"undo"} size={26} color="white" />
         </TouchableOpacity>
       </View>
+
 
       <View style={styles.subContainer}>
         {isLoading ? (
@@ -140,6 +157,8 @@ export default function Index() {
                   gender={card.gender}
                   id={card.id}
                   onPress={() => setSelectedPet(card)}
+                  pictures={card.pictures}
+                  size={card.size}
                 />
               );
             }}
@@ -201,26 +220,23 @@ const styles = StyleSheet.create({
   // Header
   headerContainer: {
     backgroundColor: "white",
-    paddingTop: 10,
+    paddingTop: 8,
     paddingHorizontal: 20,
   },
-
   topRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    marginTop: width * 0.06
   },
-
   title: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 600,
   },
 
   filterButton: {
     backgroundColor: "#eee",
     padding: 7,
     borderRadius: 20,
-    marginLeft: 210,
+    marginLeft: width * 0.312,
   },
 
   locationContainer: {
@@ -229,9 +245,10 @@ const styles = StyleSheet.create({
   },
 
   locationText: {
-    fontSize: 12,
+    fontSize: 15,
     color: "#888888",
     marginLeft: 4,
+    fontWeight: 500
   },
 
   container: {
@@ -248,9 +265,9 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
   },
   dislikeButton: {
-    height: 53, // Less tall
-    width: 170, // Wider
-    borderRadius: 12, // Small rounded corners
+    height: width * 0.11, 
+    width: width * 0.39,
+    borderRadius: 10,
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
@@ -259,11 +276,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 6,
     elevation: 5,
+    marginRight: 3
   },
   likeButton: {
-    height: 53, // Less tall
-    width: 170, // Wider
-    borderRadius: 12, // Small rounded corners
+    height: width * 0.11, 
+    width: width * 0.39,
+    borderRadius: 10, 
     backgroundColor: "orange",
     justifyContent: "center",
     alignItems: "center",
@@ -272,16 +290,17 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 6,
     elevation: 5,
+    marginLeft: 3,
   },
-
   cardButtonsContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom: height * 0.035,
+    bottom: height * 0.045,
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
     zIndex: 10,
+    
   },
   navigationButtonsContainer: {
     position: "absolute",
@@ -317,8 +336,8 @@ const styles = StyleSheet.create({
   returnButtonContainer: {
     position: "absolute",
     flexDirection: "row",
-    top: height * 0.125,
-    right: 40,
+    top: height * 0.14,
+    right: width * 0.08,
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
@@ -326,6 +345,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     height: 37,
     width: 37,
-    backgroundColor: "grey",
+    backgroundColor: "#333333",
   },
 });

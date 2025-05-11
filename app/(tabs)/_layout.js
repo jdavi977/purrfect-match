@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const ICON_SIZE = 27;
 
@@ -37,7 +37,7 @@ export default function RootLayout() {
         options={{
           title: "Favourites",
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="bookmark" size={ICON_SIZE} color={color} />
+            <MaterialCommunityIcons name="calendar-heart" size={30} color={color} />
           ),
         }}
       />
@@ -46,7 +46,7 @@ export default function RootLayout() {
         options={{
           title: "Account",
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={ICON_SIZE} color={color} />
+            <MaterialCommunityIcons name="account-outline" size={30} color={color} />
           ),
         }}
       />
