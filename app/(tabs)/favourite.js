@@ -7,15 +7,19 @@ import PetDescription from "../../components/PetDescription";
 import { useFocusEffect } from '@react-navigation/native';
 import { Image } from "expo-image";
 import { FontAwesome, FontAwesome5, MaterialCommunityIcons, } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+
 
 const { width, height } = Dimensions.get('window');
 
 
 export default function Favourite() {
   const [ viewType, setViewType ] = useState("list");
-  const [likedPets, setLikedPets] = useState([]);
+  const [ likedPets, setLikedPets ] = useState([]);
   const navigation = useNavigation();
-  const [selectedPet, setSelectedPet] = useState(null);
+  const [ selectedPet, setSelectedPet ] = useState(null);
+  const router = useRouter();
+
 
   useEffect(() => {
     navigation.setOptions({
@@ -47,11 +51,13 @@ export default function Favourite() {
   return (
     <SafeAreaView style={styles.container}>
         <View style={styles.headerContainer}>
-          <TouchableOpacity style={styles.iconPadding}>
+          <TouchableOpacity 
+            style={styles.iconPadding}
+            onPress={() => router.replace("/")}
+          >
             <Image 
               source={require("../../assets/images/Left.png")}
               style={styles.backArrowIcon}
-              
             />
           </TouchableOpacity>
           <Text style={styles.title}>My Paw-tential Matches</Text>
