@@ -22,7 +22,7 @@ const Card = ({ name, age, breed, image, location, onPress, gender, id }) => {
           style={styles.gradient}>
           <View style={styles.userContainer}>
             <Text style={styles.topText}>
-              <Text style={styles.nameText}>{name}</Text>, {age}
+              <Text style={styles.nameText}>{name},</Text> {age}
             </Text>
             <Text style={styles.descriptionText}>
               {gender} • {breed} • {id}
