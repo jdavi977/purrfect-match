@@ -158,7 +158,6 @@ export default function Index() {
                   id={card.id}
                   onPress={() => setSelectedPet(card)}
                   pictures={card.pictures}
-                  size={card.size}
                 />
               );
             }}
