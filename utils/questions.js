@@ -1,7 +1,7 @@
 export const QUESTIONS = [
     {
         id: 1,
-        question: "Counting yourself, how many adult live at home?",
+        question: "Counting yourself, how many adults live at home?",
         options: ["1", "2", "3+"],
         type: "radio",
     },
@@ -19,7 +19,7 @@ export const QUESTIONS = [
     },
     {
         id: 4,
-        question: "What type of pets have you looked after? (Select all that applies) FIX THIS",
+        question: "What type of pets have you looked after?",
         options: ["First-time owner", "Dog(s)", "Cat(s)", "Small Animals", "Others (please specify)"],
         type: "checkbox",
     },
@@ -37,13 +37,13 @@ export const QUESTIONS = [
     },
     {
         id: 7,
-        question: "What age range of pet are you looking for? (Select all that applies) FIX THIS" ,
+        question: "What age range of pet are you looking for?" ,
         options: ["Young (6 months - 2 years)", "Adult (2-7 years)", "Senior (7+ years)"],
         type: "checkbox"
     },
     {
         id: 8,
-        question: "What traits are you looking for in your new pet? (Select all that applies) FIX THIS",
+        question: "What traits are you looking for in your new pet?",
         options: ["Active", "Adventurous", "Affectionate", "Brave", "Calm", "Confident", "Cuddly", "Curious", "Easygoing", "Energetic", "Friendly", "Gentle", "Independent", "Loyal", "Mellow", "Outgoing", "Playful", "Shy", "Smart", "Quiet"],
         type: "checkbox"
     }
