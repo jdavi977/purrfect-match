@@ -8,6 +8,9 @@ export default function QuestionScreen() {
     const [answers, setAnswers] = useState({});
     const [selectedOption, setSelectedOption] = useState([]);
     const router = useRouter();
+    const [currentQuestion, setCurrentQuestion] = useState(1); // 1-based for user-friendliness
+    const totalQuestions = 8;
+
 
     const goToSignUp = () => {
         router.push("/signUp"); 
@@ -42,6 +45,7 @@ export default function QuestionScreen() {
 
         if (step + 1 < QUESTIONS.length) {
             setStep(step + 1);
+            setCurrentQuestion(currentQuestion + 1);
         } else {
             goToSignUp();
         }
@@ -52,6 +56,14 @@ export default function QuestionScreen() {
             <Text style={styles.steps}>
                 STEP {current.id} OF {QUESTIONS.length}
             </Text>
+            <View style={styles.progressBarContainer}>
+                <View
+                    style={[
+                    styles.progressBar,
+                    { width: `${(currentQuestion / totalQuestions) * 100}%` },
+                    ]}
+                />
+            </View>
             <Text style={styles.question}>
                 {current.question}
             </Text>
@@ -116,4 +128,17 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: "bold",
     },
+    progressBarContainer: {
+  height: 10,
+  width: '90%',
+  backgroundColor: '#e0e0e0',
+  borderRadius: 5,
+  overflow: 'hidden',
+  alignSelf: 'center',
+  marginVertical: 20,
+},
+progressBar: {
+  height: '100%',
+  backgroundColor: '#007AFF',
+},
   });

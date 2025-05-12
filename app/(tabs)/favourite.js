@@ -116,6 +116,7 @@ export default function Favourite() {
               breed={item.breed}
               gender={item.gender}
               viewType={viewType}
+              location={item.location}
             />
           )}
           contentContainerStyle={styles.listContent}
