@@ -74,11 +74,13 @@ const styles = StyleSheet.create({
     containerStyle: {
         width: width * 0.35,
         height: width * 0.35,
-        backgroundColor: "#B5DCFB",
+        backgroundColor: "#DAEEFD",
         borderRadius: width * 0.35 / 2,
         justifyContent: "center",
         alignItems: "center",
         marginBottom: height * 0.02,
+        borderWidth: 2,
+        borderColor: "#b5dcfb"
     },
     title: {
         fontSize: 27,

@@ -33,7 +33,7 @@ export const QUESTIONS = [
         id: 6,
         question: "What type of pet are you looking for?",
         options: ["Cat", "Dog"],
-        type: "radio"
+        type: "checkbox"
     },
     {
         id: 7,

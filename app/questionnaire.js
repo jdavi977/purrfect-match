@@ -1,56 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
 import { QUESTIONS } from "../utils/questions";
 import { FontAwesome } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
+import { useAnswers } from "../context/AnswersContext";
+
 
 const { width, height } = Dimensions.get("screen");
 
 export default function QuestionScreen() {
-    const [step, setStep] = useState(0);
-    const [answers, setAnswers] = useState({});
-    const [selectedOption, setSelectedOption] = useState([]);
+    const { questionId, fromSummary, fromProfile } = useLocalSearchParams();
+    const [answers, setAnswers] = useAnswers();
     const router = useRouter();
-    const [currentQuestion, setCurrentQuestion] = useState(1);
-    const totalQuestions = 10;
 
-    const goToSignUp = () => {
-        router.push({ pathname: "/questionSummary", params: { answers: JSON.stringify(answers) } });
-    };
+    const initialStep = questionId ? QUESTIONS.findIndex(q => q.id == questionId) : 0;
+    const [step, setStep] = useState(initialStep >= 0 ? initialStep : 0);
+    const [selectedOption, setSelectedOption] = useState([]);
 
     const current = QUESTIONS[step];
+    const currentQuestion = current.id;  
+    const totalQuestions = QUESTIONS.length;
+
+    useEffect(() => {
+        if (answers[current.id]) {
+            if (current.type === "radio") {
+                setSelectedOption([answers[current.id]]);
+            } else if (current.type === "checkbox") {
+                setSelectedOption(Array.isArray(answers[current.id]) ? answers[current.id] : []);
+            }
+        } else {
+            setSelectedOption([]);
+        }
+    }, [step, answers]);
 
     const handleOptionPress = (option) => {
         if (current.type === "radio") {
             setSelectedOption([option]);
         } else if (current.type === "checkbox") {
-            if (selectedOption.includes(option)) {
-                setSelectedOption(selectedOption.filter((item) => item !== option));
+            setSelectedOption(selectedOption.includes(option)
+                ? selectedOption.filter((item) => item !== option)
+                : [...selectedOption, option]
+            );
+        }
+    };
+
+const handleContinue = () => {
+    if (selectedOption.length === 0) return;
+
+    const updatedAnswers = {
+        ...answers,
+        [current.id]: current.type === "radio" ? selectedOption[0] : selectedOption,
+    };
+
+    setAnswers(updatedAnswers);
+    setTimeout(() => {
+        if (fromProfile) {
+            router.replace("(tabs)/profile");
+        } else if (fromSummary) {
+            router.replace("/questionSummary");
+        } else {
+            if (step + 1 < totalQuestions) {
+                setStep(step + 1);
             } else {
-                setSelectedOption([...selectedOption, option]);
+                router.push("/questionSummary");
             }
         }
-    };
-
-    const handleContinue = () => {
-        if (selectedOption.length === 0) return;
-
-        const newAnswers = {
-            ...answers,
-            [current.id]: current.type === "radio" ? selectedOption[0] : selectedOption,
-        };
-        setAnswers(newAnswers);
-        console.log("answers: ", answers);
-
-        setSelectedOption([]);
-
-        if (step + 1 < QUESTIONS.length) {
-            setStep(step + 1);
-            setCurrentQuestion(currentQuestion + 1);
-        } else {
-            goToSignUp();
-        }
-    };
+    }, 100);  
+};
 
     return (
         <View style={styles.container}>
@@ -60,7 +77,6 @@ export default function QuestionScreen() {
                     style={styles.leftArrow}
                     onPress={() => {
                         setStep(step - 1);
-                        setCurrentQuestion(currentQuestion - 1);
                     }}
                 >
                     <FontAwesome name="angle-left" size={25}/>
