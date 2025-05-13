@@ -113,11 +113,13 @@ const styles = StyleSheet.create({
   containerStyle: { 
     width: width * 0.35,  
     height: width * 0.35,
-    backgroundColor: "#B5DCFB",
+    backgroundColor: "#DAEEFD",
     borderRadius: width * 0.4 / 2,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: height * 0.02,
+    borderWidth: 2,
+    borderColor: "#b5dcfb"
   },
   title: {
     fontSize: 27,
@@ -129,7 +131,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     textAlign: "center",
-    marginHorizontal: width * 0.05,
+    marginHorizontal: width * 0.09,
   },
   pagination: {
     position: "absolute",

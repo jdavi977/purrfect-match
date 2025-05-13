@@ -1,5 +1,10 @@
-import { Slot } from "expo-router";
+import { Slot } from 'expo-router';
+import { AnswersProvider } from '../context/AnswersContext';
 
 export default function Layout() {
-  return <Slot />;
+    return (
+        <AnswersProvider>
+            <Slot />
+        </AnswersProvider>
+    );
 }
