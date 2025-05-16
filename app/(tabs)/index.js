@@ -19,6 +19,7 @@ import { useRouter } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getPets } from "../../api/api-conn.js";
 import { getRescueGroupsPets } from "../../api/api-conn.js";
+import { useAnswers } from "../../context/AnswersContext";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -38,13 +39,17 @@ export default function Index() {
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
+  const answersContext = useAnswers();
 
   // Fetch pets from Petfinder API
   useEffect(() => {
     async function fetchPets() {
       setIsLoading(true);
       try {
-        const pets = await getRescueGroupsPets();
+        // Extract answers from context - it returns an array [answers, setAnswers]
+        const [answers] = answersContext;
+        // Pass the answers to the API function
+        const pets = await getRescueGroupsPets("cat", answers);
         setPetData(pets || []);
       } catch (error) {
         console.error("Error fetching pets:", error);
@@ -53,7 +58,7 @@ export default function Index() {
       }
     }
     fetchPets();
-  }, []);
+  }, [answersContext]);
 
   const handleLiked = (index) => {
     const pet = petData[index];

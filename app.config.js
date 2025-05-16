@@ -1,7 +1,7 @@
-import 'dotenv/config';
+import "dotenv/config";
 
 export default {
-  name: "purrfect-match",
+  name: "Purrfect Match",
   slug: "purrfect-match",
   version: "1.0.0",
   orientation: "portrait",
@@ -13,6 +13,7 @@ export default {
     PETFINDER_CLIENT_ID: process.env.PETFINDER_CLIENT_ID,
     PETFINDER_CLIENT_SECRET: process.env.PETFINDER_CLIENT_SECRET,
     RESCUE_GROUPS_API_KEY: process.env.RESCUE_GROUPS_API_KEY,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY, // Use Gemini API key from .env file
     eas: {
       projectId: "your-project-id",
     },
@@ -33,6 +34,7 @@ export default {
   },
   plugins: [
     "expo-router",
+    "expo-font",
     [
       "expo-splash-screen",
       {
@@ -45,12 +47,5 @@ export default {
   ],
   experiments: {
     typedRoutes: true,
-  },
-
-  name: 'Purrfect Match',
-  slug: 'purrfect-match',
-  plugins: [
-    'expo-font',
-  ],
+  }
 };
-

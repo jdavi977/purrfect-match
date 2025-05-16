@@ -6,12 +6,15 @@ import {
   Dimensions,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { Image } from "expo-image";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
 import { getRescueGroupsPets } from "../api/api-conn.js";
 import CardButton from "../components/CardButtons.js";
-import { formatPetDescription } from "../utils/htmlUtils";
+import { formatPetDescription as formatHtmlDescription } from "../utils/htmlUtils";
+import formatPetDescription from "../api/gemini/formatPetDescription";
+import extractPetHealth from "../api/gemini/extractPetHealth";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -21,6 +24,10 @@ const PetDescription = ({ pet, onClose }) => {
   const [readMore, setReadMore] = useState(false);
   const [petData, setPetData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [healthData, setHealthData] = useState([]);
+  const [isHealthLoading, setIsHealthLoading] = useState(false);
+  const [formattedDescription, setFormattedDescription] = useState("");
+  const [isDescriptionLoading, setIsDescriptionLoading] = useState(false);
 
   // Fetch pets from Petfinder API
   useEffect(() => {
@@ -37,10 +44,65 @@ const PetDescription = ({ pet, onClose }) => {
     }
     fetchPets();
   }, []);
+  
+  // Format pet description when pet changes or when about tab is selected
+  useEffect(() => {
+    async function fetchFormattedDescription() {
+      if (!pet || activeTab !== "about") return;
+      
+      setIsDescriptionLoading(true);
+      try {
+        // Use Gemini to format the description for mobile
+        const formattedText = await formatPetDescription(
+          pet.description,
+          pet,
+          pet.id // For caching
+        );
+        setFormattedDescription(formattedText || formatHtmlDescription(pet.description));
+      } catch (error) {
+        console.error("Error formatting description:", error);
+        setFormattedDescription(formatHtmlDescription(pet.description));
+      } finally {
+        setIsDescriptionLoading(false);
+      }
+    }
+    
+    fetchFormattedDescription();
+  }, [pet, activeTab]);
+  
+  // Fetch health data when pet changes or when health tab is selected
+  useEffect(() => {
+    async function fetchHealthData() {
+      if (!pet || activeTab !== "health") return;
+      
+      setIsHealthLoading(true);
+      try {
+        // Use the pet's description and data to generate health information
+        const healthInfo = await extractPetHealth(
+          pet.description,
+          pet,
+          pet.id // For caching
+        );
+        setHealthData(healthInfo || []);
+      } catch (error) {
+        console.error("Error extracting health data:", error);
+        setHealthData(["Health information unavailable"]);
+      } finally {
+        setIsHealthLoading(false);
+      }
+    }
+    
+    fetchHealthData();
+  }, [pet, activeTab]);
 
   const toggleLike = () => {
     setIsLiked(!isLiked);
   };
+
+  // Early return if pet is null or undefined
+  if (!pet) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -96,19 +158,34 @@ const PetDescription = ({ pet, onClose }) => {
           <View style={styles.socialRow}>
             <View style={styles.socialItem}>
               <FontAwesome name="child" size={20} color="#4A56E2" />
-              <Text>Good with Children: Yes</Text>
+              <Text>
+                Good with Children: {pet.environment?.children ? 
+                  (typeof pet.environment.children === 'string' ? pet.environment.children : 'Yes') : 
+                  (pet.isKidsOk || 'Unknown')}
+              </Text>
             </View>
             <View style={styles.socialItem}>
               <MaterialIcons name="healing" size={20} color="#4A56E2" />
-              <Text>Special Care: No</Text>
+              <Text>
+                Special Care: {pet.attributes?.special_needs ? 'Yes' : 
+                  (pet.isSpecialNeeds && pet.isSpecialNeeds !== 'Unknown' ? 'Yes' : 'No')}
+              </Text>
             </View>
             <View style={styles.socialItem}>
               <FontAwesome name="paw" size={20} color="#4A56E2" />
-              <Text>Dog Friendly: Yes</Text>
+              <Text>
+                Dog Friendly: {pet.environment?.dogs ? 
+                  (typeof pet.environment.dogs === 'string' ? pet.environment.dogs : 'Yes') : 
+                  (pet.isDogsOk || 'Unknown')}
+              </Text>
             </View>
             <View style={styles.socialItem}>
               <FontAwesome name="cat" size={20} color="#4A56E2" />
-              <Text>Cat Friendly: Limited</Text>
+              <Text>
+                Cat Friendly: {pet.environment?.cats ? 
+                  (typeof pet.environment.cats === 'string' ? pet.environment.cats : 'Yes') : 
+                  (pet.isCatsOk || 'Unknown')}
+              </Text>
             </View>
           </View>
         </View>
@@ -134,24 +211,55 @@ const PetDescription = ({ pet, onClose }) => {
         <View style={styles.tabContent}>
           {activeTab === "about" && (
             <View>
-              <Text>
-                {pet.description && pet.description.length > 100
-                  ? readMore
-                    ? pet.description
-                    : `${pet.description.substring(0, 100)}...`
-                  : pet.description}
-              </Text>
-              <TouchableOpacity onPress={() => setReadMore(!readMore)}>
-                <Text style={styles.readMoreText}>
-                  {readMore ? "Show Less" : "Read More"}
-                </Text>
-              </TouchableOpacity>
+              {isDescriptionLoading ? (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size="small" color="#4A56E2" />
+                  <Text style={styles.loadingText}>Enhancing description...</Text>
+                </View>
+              ) : (
+                <>
+                  <Text style={styles.descriptionText}>
+                    {formattedDescription && formattedDescription.length > 150
+                      ? readMore
+                        ? formattedDescription
+                        : `${formattedDescription.substring(0, 150)}...`
+                      : formattedDescription}
+                  </Text>
+                  {formattedDescription && formattedDescription.length > 150 && (
+                    <TouchableOpacity onPress={() => setReadMore(!readMore)}>
+                      <Text style={styles.readMoreText}>
+                        {readMore ? "Show Less" : "Read More"}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </>
+              )}
             </View>
           )}
           {activeTab === "health" && (
-            <Text>
-              Vaccinated, neutered, and microchipped. Healthy and active!
-            </Text>
+            <View>
+              <Text style={styles.descriptionText}>Health information for {pet.name}:</Text>
+              {isHealthLoading ? (
+                <View style={styles.loadingContainer}>
+                  <ActivityIndicator size="large" color="#4A56E2" />
+                  <Text style={styles.loadingText}>Analyzing health information...</Text>
+                </View>
+              ) : (
+                <View style={styles.bulletContainer}>
+                  {healthData && healthData.length > 0 ? (
+                    healthData.map((item, index) => (
+                      <Text key={index} style={styles.bulletText}>
+                        {"\u2022"} {item}
+                      </Text>
+                    ))
+                  ) : (
+                    <Text style={styles.bulletText}>
+                      {"\u2022"} Health information unavailable
+                    </Text>
+                  )}
+                </View>
+              )}
+            </View>
           )}
           {activeTab === "resources" && (
             <Text>
@@ -163,15 +271,10 @@ const PetDescription = ({ pet, onClose }) => {
 
         {/* Lifestyle Preferences */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Lifestyle Preference</Text>
+          <Text style={styles.sectionTitle}>Is {pet.name} Right for You?</Text>
           <View style={styles.bulletContainer}>
-            <Text style={styles.bulletText}>
-              {"\u2022"} Barry thrives in an active household that enjoys
-              outdoor adventures.
-            </Text>
-            <Text style={styles.bulletText}>
-              {"\u2022"} He needs space to run and prefers a home with a yard or
-              regular park trips.
+            <Text style={styles.descriptionText}>
+              If you're looking for an {pet.qualities && pet.qualities.length > 0 ? pet.qualities.join(", ").toLowerCase() : "loving"} pet who will thrive in a home committed to their needs, then {pet.name} might be the perfect addition to your family.
             </Text>
           </View>
         </View>
@@ -227,6 +330,22 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
   scrollContainer: { flexGrow: 1 },
   image: { width: "100%", height: height * 0.4 },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loadingText: {
+    marginTop: 10,
+    color: '#666',
+    fontSize: 14,
+  },
+  sectionSubtitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "#333",
+    marginBottom: 8,
+  },
   closeButton: {
     position: "absolute",
     top: 40,
@@ -292,8 +411,32 @@ const styles = StyleSheet.create({
   activeTabText: { color: "#4A56E2", fontWeight: "bold" },
   tabContent: { padding: 20 },
   readMoreText: { color: "#4A56E2", marginTop: 5 },
+  descriptionText: { fontSize: 16, lineHeight: 24, color: "#333" },
   bulletContainer: { marginTop: 10 },
   bulletText: { marginBottom: 5, fontSize: 16, color: "#555" },
+  lifestyleContainer: { 
+    flexDirection: "row", 
+    flexWrap: "wrap", 
+    marginTop: 10,
+    justifyContent: "space-between",
+  },
+  lifestyleItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f8f9ff",
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 10,
+    width: "48%",
+    borderLeftWidth: 3,
+    borderLeftColor: "#4A56E2",
+  },
+  lifestyleText: {
+    fontSize: 14,
+    color: "#333",
+    marginLeft: 8,
+    fontWeight: "500",
+  },
   tagsContainerOutlined: {
     flexDirection: "row",
     flexWrap: "wrap",
