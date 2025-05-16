@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Text,
   View,
@@ -12,43 +11,38 @@ import { FontAwesome, Entypo } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("screen");
 
-const Card = ({ name, age, breed, image, location, onPress, gender, id }) => {
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
-        <Image source={image} style={styles.image} />
-        <LinearGradient
-          colors={["transparent", "rgba(0,0,0,.9)"]}
-          style={styles.gradient}>
-          <View style={styles.userContainer}>
-            <Text style={styles.topText}>
-              <Text style={styles.nameText}>{name}</Text>, {age}
-            </Text>
-            <Text style={styles.descriptionText}>
-              {gender} • {breed} • {id}
-            </Text>
-            <View style={styles.preferenceContainer}>
-              <FontAwesome name="sliders" size={16} color="#007AFF" />
-              <Text style={styles.preferenceText}>Matched 5+ Preferences</Text>
+const Card = ({ name, age, breed, image, location, onPress, gender, id, pictures, size }) => {
+
+    return (
+        <View style={styles.container}>
+        <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
+            <Image source={image} style={styles.image} />
+            <LinearGradient
+            colors={["transparent", "rgba(0,0,0,.9)"]}
+            style={styles.gradient}>
+            <View style={styles.userContainer}>
+                <Text style={styles.descriptionText}>
+                {size} {breed} ︳ {age}/{gender} ︳ {id}
+                </Text>
+                <Text style={styles.topText}><Text style={styles.nameText}>{name},</Text> {age}</Text>
+                <View style={styles.locationText}>
+                    <Entypo name="location" size={12} color="#007AFF" />
+                    <Text style={{marginLeft: 8, color: "white", fontWeight: 500, fontSize: 14}}>{location}</Text>
+                </View>
             </View>
-            <Text style={styles.locationText}>
-              <Entypo name="location-pin" size={16} color="#007AFF" />
-              {location}
-            </Text>
-          </View>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
+            </LinearGradient>
+        </TouchableOpacity>
+        </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    top: -30,
+    top: height * -0.035,
   },
   imageWrapper: {
     position: "relative",
-    borderRadius: 10,
+    borderRadius: 20,
     overflow: "hidden",
   },
   outlineLeft: {
@@ -66,18 +60,17 @@ const styles = StyleSheet.create({
   outlineReset: {
     borderColor: "white",
     borderWidth: 0,
-    borderRadius: 0,
+    borderRadius: 10,
   },
 
   userContainer: {
     position: "absolute",
-    bottom: 40,
+    bottom: height *0.1,
     left: 15,
   },
   image: {
     width: width * 0.9,
-    height: height * 0.7,
-    borderRadius: 18,
+    height: height * 0.75,
   },
   gradient: {
     position: "absolute",
@@ -104,13 +97,15 @@ const styles = StyleSheet.create({
     color: "white",
   },
   locationText: {
-    marginTop: 3,
+    marginTop: 4,
     fontSize: 13,
     color: "white",
-    height: 60,
+    flexDirection: "row",
+    alignItems: "center"
   },
   descriptionText: {
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: 500,
     color: "white",
   },
   preferenceContainer: {

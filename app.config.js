@@ -46,4 +46,11 @@ export default {
   experiments: {
     typedRoutes: true,
   },
+
+  name: 'Purrfect Match',
+  slug: 'purrfect-match',
+  plugins: [
+    'expo-font',
+  ],
 };
+

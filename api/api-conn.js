@@ -46,6 +46,7 @@ export const getRescueGroupsPets = async () => {
       },
     });
 
+    console.log("All data: ", response.data);
     console.log("API response status:", response.status);
     console.log("Number of pets returned:", response.data?.data?.length || 0);
 
