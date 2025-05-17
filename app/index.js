@@ -7,6 +7,7 @@ const { width, height } = Dimensions.get("screen");
 
 export default function IntroScreen() {
 
+
 const slides = [
   {
     key: 1,
@@ -15,24 +16,24 @@ const slides = [
   },
   {
     key: 2,
-    image: require("../assets/images/Location-2.png"),
-    imageStyle: {width: width * 0.1895, height: width * 0.1895,},
+    image: require("../assets/images/bHeart.png"),
+    imageStyle: {width: width * 0.17, height: width * 0.17,},
     containerStyle: styles.containerStyle,
     title: "Find Your Purfect Match",
     subtitle: "We're here to help you connect with a pet that truly fits your lifestyle and vibe.",
   },
   {
     key: 3,
-    image: require("../assets/images/Location-2.png"),
-    imageStyle: {width: width * 0.1895, height: width * 0.1895},
+    image: require("../assets/images/bShelter.png"),
+    imageStyle: {width: width * 0.17, height: width * 0.17},
     containerStyle: styles.containerStyle,
     title: "Shelters You Can Trust",
       subtitle: "Explore a variety of verified shelter. All in one place, without the mess or stress.",
   },
   {
     key: 4,
-    image: require("../assets/images/Location-2.png"),
-    imageStyle: {width: width * 0.1895, height: width * 0.1895},
+    image: require("../assets/images/Fill.png"),
+    imageStyle: {width: width * 0.17, height: width * 0.17},
     containerStyle: styles.containerStyle,
     title: "Let's Get to Know You",
     subtitle: "Answer a few quick questions to discover pets that match your personality and routine.",
