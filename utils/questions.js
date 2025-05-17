@@ -14,7 +14,7 @@ export const QUESTIONS = [
     {
         id: 3,
         question: "What level of pet experience do you have?",
-        options: ["New to Pets — Fist-time pet owner ", "Intermediate — Had a pet or two before", "Experienced — Been around pet for a while", "Expert — Handled various pets and their needs"],
+        options: ["New to Pets — First-time pet owner ", "Intermediate — Had a pet or two before", "Experienced — Been around pet for a while", "Expert — Handled various pets and their needs"],
         type: "radio",
     },
     {
