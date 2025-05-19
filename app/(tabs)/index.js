@@ -187,10 +187,11 @@ export default function Index() {
             pet={selectedPet}
             likedPets={likedPets}
             setLikedPets={setLikedPets}
+            liked={false}
             onClose={(liked) => {
               if (liked) {
-                setSelectedPet(null);
                 swiperRef.current?.swipeRight();
+                setTimeout(() => setSelectedPet(null), 300); // adjust to match your swipe duration
               } else {
                 setSelectedPet(null);
               }

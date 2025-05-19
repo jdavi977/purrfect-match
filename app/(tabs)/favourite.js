@@ -126,8 +126,18 @@ export default function Favourite() {
             pet={selectedPet}
             likedPets={likedPets}
             setLikedPets={setLikedPets}
-            onClose={() => setSelectedPet(null)} 
+            onClose={(liked) => {
+              if (!liked) {
+                // remove the pet that was just “un‐liked”
+                const filtered = likedPets.filter(p => p.id !== selectedPet.id);
+                setLikedPets(filtered);
+                // also persist to storage
+                AsyncStorage.setItem("likedPets", JSON.stringify(filtered));
+              }
+              setSelectedPet(null);
+            }}
             handleLiked = {() => handleLiked(cardIndex)}
+            liked = {true}
             />
         </Modal>
     </SafeAreaView>
