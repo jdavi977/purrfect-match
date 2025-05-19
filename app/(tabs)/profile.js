@@ -4,6 +4,8 @@ import { useRouter } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import { QUESTIONS } from "../../utils/questions";
 import { useAnswers } from "../../context/AnswersContext";
+import { Image } from "expo-image";
+
 
 const { height, width } = Dimensions.get("screen");
 
@@ -13,57 +15,102 @@ export default function Profile() {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.leftArrow} onPress={() => router.back()}>
-                    <FontAwesome name="angle-left" size={24} />
+            <View style={styles.headerContainer}>
+                <TouchableOpacity 
+                    style={styles.iconPadding}
+                    onPress={() => router.replace("/")}
+                >
+                <Image 
+                    source={require("../../assets/images/Left.png")}
+                    style={styles.backArrowIcon}
+                />
                 </TouchableOpacity>
-                <Text style={styles.title}>Account Pet Preferences</Text>
+                <Text style={styles.title}>My Paw-tential Matches</Text>
+                <TouchableOpacity style={styles.hiddenIconPadding}>
+                    <Image 
+                    source={require("../../assets/images/adaptive-icon.png")}
+                    style={styles.backArrowIcon}
+                    />
+                </TouchableOpacity>
             </View>
-
-
-            <Text style={styles.summaryTitle}>One last look before we find your new best friend!</Text>
-            <Text style={styles.subText}>You can update your answers at any time in your settings.</Text>
-
-            <ScrollView>
-                {QUESTIONS.map((q) => (
-                    <TouchableOpacity
-                        key={q.id}
-                        style={styles.questionCard}
-                        onPress={() =>
-                            router.push({
-                                pathname: "../questionnaire",
-                                params: {
-                                    questionId: q.id,
-                                    fromProfile: true, 
-                                }
-                            })
-                        }
-                    >
-                        <View style={styles.questionContainer}>
-                            <Text style={styles.questionText}>{q.question}</Text>
-                            <FontAwesome name="angle-right" size={21} style={{ color: "#064577", marginLeft: width * 0.35}}/>
-                        </View>
-                        <Text style={styles.answerText}>
-                            {answers[q.id]
-                                ? Array.isArray(answers[q.id])
-                                    ? answers[q.id].join(", ")
-                                    : answers[q.id]
-                                : "No answer"}
-                        </Text>
-                    </TouchableOpacity>
-                ))}
-            </ScrollView>
+            <View style={styles.borderLine}/>
+            <View style={styles.screenPadding}>
+                <Text style={styles.summaryTitle}>One last look before we find your new best friend!</Text>
+                <Text style={styles.subText}>You can update your answers at any time in your settings.</Text>
+            </View>
+                <ScrollView style={styles.screenPadding}>
+                    {QUESTIONS.map((q) => (
+                        <TouchableOpacity
+                            key={q.id}
+                            style={styles.questionCard}
+                            onPress={() =>
+                                router.push({
+                                    pathname: "../questionnaire",
+                                    params: {
+                                        questionId: q.id,
+                                        fromProfile: true, 
+                                    }
+                                })
+                            }
+                        >
+                            <View style={styles.questionContainer}>
+                                <Text style={styles.questionText}>{q.question}</Text>
+                                <FontAwesome name="angle-right" size={21} style={{ color: "#064577", marginLeft: width * 0.35}}/>
+                            </View>
+                            <Text style={styles.answerText}>
+                                {answers[q.id]
+                                    ? Array.isArray(answers[q.id])
+                                        ? answers[q.id].join(", ")
+                                        : answers[q.id]
+                                    : "No answer"}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
+                </ScrollView>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    headerContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingTop: height * 0.045,
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
+    iconPadding: {
+        padding: width * 0.02,
+        backgroundColor: "#e8e8e8",
+        borderRadius: 9999,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    hiddenIconPadding: {
+        padding: width * 0.02,
+        backgroundColor: "white",
+        borderRadius: 9999,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    borderLine: {
+        height: 2,
+        backgroundColor: "#F6F6F6",
+        marginVertical: 8
+    },
+        backArrowIcon: {
+        height: width * 0.05,
+        width: width * 0.05
+    },
     container: {
         flex: 1,
-        padding: 20,
     },
     questionContainer: {
         flexDirection: "row"
+    },
+    screenPadding: {
+        paddingHorizontal: width * 0.065,
     },
     header: {
         position: "relative",

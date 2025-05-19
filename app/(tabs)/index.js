@@ -143,7 +143,10 @@ export default function Index() {
       <View style={styles.headerContainer}>
         <View style={styles.topRow}>
           <Text style={styles.title}><Text style={{color: "#0c7dd6"}}>1223</Text> Happy Matches</Text>
-          <TouchableOpacity style={styles.filterButton}>
+          <TouchableOpacity 
+            style={styles.filterButton}
+            onPress={() => router.replace("/profile")}
+          >
             <FontAwesome name="sliders" size={20} color="black" />
           </TouchableOpacity>
         </View>
