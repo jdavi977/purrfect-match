@@ -19,7 +19,9 @@ export default function Favourite() {
   const navigation = useNavigation();
   const [ selectedPet, setSelectedPet ] = useState(null);
   const router = useRouter();
-
+useEffect(() => {
+  console.log("likedPets updated:", likedPets);
+}, [likedPets]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -128,11 +130,13 @@ export default function Favourite() {
             setLikedPets={setLikedPets}
             onClose={(liked) => {
               if (!liked) {
+                console.log("bef liked Pets: ", likedPets)
                 // remove the pet that was just “un‐liked”
                 const filtered = likedPets.filter(p => p.id !== selectedPet.id);
                 setLikedPets(filtered);
                 // also persist to storage
                 AsyncStorage.setItem("likedPets", JSON.stringify(filtered));
+                console.log("aft liked Pets: ", likedPets)
               }
               setSelectedPet(null);
             }}

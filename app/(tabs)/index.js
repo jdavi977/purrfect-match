@@ -1,4 +1,4 @@
-import { useNavigation } from "expo-router";
+import { useFocusEffect, useNavigation } from "expo-router";
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
@@ -41,6 +41,27 @@ export default function Index() {
   const router = useRouter();
   const answersContext = useAnswers();
 
+  // Used to read AsyncStorage for likedPets
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        try {
+          const json = await AsyncStorage.getItem("likedPets");
+          if (json) {
+            setLikedPets(JSON.parse(json));
+          }
+        } catch (e) {
+          console.error("Failed to load likedPets from storage", e);
+        }
+      })();
+    }, [])
+  );
+
+  // Changes local likedPets based on the reading above
+  useEffect(() => {
+    AsyncStorage.setItem("likedPets", JSON.stringify(likedPets)).catch(console.error);
+  }, [likedPets]);
+
   // Fetch pets from Petfinder API
   useEffect(() => {
     async function fetchPets() {
@@ -69,6 +90,7 @@ export default function Index() {
       if (!alreadyLiked) {
         return [...prev, pet];
       }
+      console.log("likedPets: ", likedPets)
       return prev;
     });
   };
