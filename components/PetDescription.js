@@ -15,11 +15,14 @@ import CardButton from "../components/CardButtons.js";
 import { formatPetDescription as formatHtmlDescription } from "../utils/htmlUtils";
 import formatPetDescription from "../api/gemini/formatPetDescription";
 import extractPetHealth from "../api/gemini/extractPetHealth";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+
 
 const { width, height } = Dimensions.get("screen");
 
-const PetDescription = ({ pet, onClose }) => {
-  const [isLiked, setIsLiked] = useState(false);
+const PetDescription = ({ pet, onClose, liked }) => {
+  const [isLiked, setIsLiked] = useState(liked);
   const [activeTab, setActiveTab] = useState("about");
   const [readMore, setReadMore] = useState(false);
   const [petData, setPetData] = useState([]);
@@ -28,6 +31,8 @@ const PetDescription = ({ pet, onClose }) => {
   const [isHealthLoading, setIsHealthLoading] = useState(false);
   const [formattedDescription, setFormattedDescription] = useState("");
   const [isDescriptionLoading, setIsDescriptionLoading] = useState(false);
+  const router = useRouter();
+
 
   // Fetch pets from Petfinder API
   useEffect(() => {
@@ -105,112 +110,195 @@ const PetDescription = ({ pet, onClose }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity 
+            style={styles.iconPadding}
+            onPress={() => onClose(isLiked)}
+          >
+            <Image 
+              source={require("../assets/images/Left.png")}
+              style={styles.backArrowIcon}
+            />
+          </TouchableOpacity>
+          <Text style={styles.title}>Pawsonality Peek</Text>
+          <TouchableOpacity style={styles.iconPadding}>
+            <Image
+              source={require("../assets/images/Share.png")}
+              style={styles.shareIcon}
+            />
+          </TouchableOpacity>
+        </View>
       <ScrollView style={styles.scrollContainer}>
         <Image source={pet.image} style={styles.image} />
 
-        {/* Close and Like Buttons */}
-        <TouchableOpacity
-          style={styles.closeButton}
-          onPress={() => onClose(isLiked)}>
-          <FontAwesome name="angle-left" size={28} color="black" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.likeButton} onPress={toggleLike}>
-          <FontAwesome
-            name={isLiked ? "heart" : "heart-o"}
-            size={28}
-            color="red"
-          />
-        </TouchableOpacity>
+        {/* Like Buttons */}
+        <View style={styles.likeButton}>
+          <TouchableOpacity style={styles.heartIcon} onPress={toggleLike}>
+            <FontAwesome
+              name={isLiked ? "heart" : "heart-o"}
+              size={17}
+              color="#ff4081"
+            />
+          </TouchableOpacity>
+        </View>
 
         {/* Age, Weight, Gender */}
         <View style={styles.infoContainer}>
           <View style={styles.infoBox}>
-            <Text style={styles.infoValue}>{pet.age}</Text>
+            <Text style={styles.infoLabel}>Sex</Text>
+            <Text style={styles.infoValue}>{pet.age}/{pet.gender}</Text>
+          </View>
+          <View style={styles.infoBox}>
             <Text style={styles.infoLabel}>Age</Text>
+
+            <Text style={styles.infoValue}>{pet.age}</Text>
           </View>
           <View style={styles.infoBox}>
-            <Text style={styles.infoValue}>{pet.size}</Text>
             <Text style={styles.infoLabel}>Size</Text>
-          </View>
-          <View style={styles.infoBox}>
-            <Text style={styles.infoValue}>{pet.gender}</Text>
-            <Text style={styles.infoLabel}>Gender</Text>
+            <Text style={styles.infoValue}>{pet.size}</Text>
           </View>
         </View>
 
         {/* Name, Breed, Location */}
         <View style={styles.nameSection}>
-          <Text style={styles.breedText}>{pet.breed}</Text>
           <Text style={styles.nameText}>{pet.name}</Text>
-          <View style={styles.locationRow}>
-            <Text style={styles.locationText}>{pet.location}</Text>
-            <Text style={styles.viewLocation}>View Location</Text>
+          <Text style={styles.breedText}>{pet.breed} │ {pet.id}</Text>
+        </View>
+
+        {/* Pet Highlights */}
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>
+            Pet Highlights
+          </Text>
+          <View >
+            <View style={styles.socialItem}>
+              <View style={styles.socialPadding}>
+                <Image 
+                  source={require("../assets/images/bHome.png")}
+                  style={styles.socialIcon}
+                />
+              </View>
+              <View>
+                <Text style={styles.careTitle}>Living History</Text>
+                <Text>
+                  {pet.environment?.dogs ? 
+                    (typeof pet.environment.dogs === 'string' ? pet.environment.dogs : 'Yes') : 
+                    (pet.isDogsOk || 'Unknown')}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.socialItem}>
+              <View style={styles.socialPadding}>
+                <Image 
+                  source={require("../assets/images/bHealth.png")}
+                  style={styles.socialIcon}
+                />
+              </View>
+              <View>
+                <Text style={styles.careTitle}>Vaccination Status</Text>
+                <Text>
+                  {pet.environment?.children ? 
+                    (typeof pet.environment.children === 'string' ? pet.environment.children : 'Yes') : 
+                    (pet.isKidsOk || 'Unknown')}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.socialItem}>
+              <View style={styles.socialPadding}>
+                <Image 
+                  source={require("../assets/images/bChip.png")}
+                  style={styles.socialIcon}
+                />
+              </View>
+              <View>
+                <Text style={styles.careTitle}>Microchip Check</Text>
+                <Text>
+                  {pet.attributes?.special_needs ? 'Yes' : 
+                    (pet.isSpecialNeeds && pet.isSpecialNeeds !== 'Unknown' ? 'Yes' : 'No')}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
 
         {/* Social Interaction */}
         <View style={styles.sectionContainer}>
           <Text style={styles.sectionTitle}>
-            Social Interaction & Care Overview
+            Social Interaction & Care
           </Text>
-          <View style={styles.socialRow}>
+          <View >
             <View style={styles.socialItem}>
-              <FontAwesome name="child" size={20} color="#4A56E2" />
-              <Text>
-                Good with Children: {pet.environment?.children ? 
-                  (typeof pet.environment.children === 'string' ? pet.environment.children : 'Yes') : 
-                  (pet.isKidsOk || 'Unknown')}
-              </Text>
+              <View style={styles.socialPadding}>
+                <Image 
+                  source={require("../assets/images/bDog2.png")}
+                  style={styles.socialIcon}
+                />
+              </View>
+              <View>
+                <Text style={styles.careTitle}>Dog-Compatible</Text>
+                <Text>
+                  {pet.environment?.dogs ? 
+                    (typeof pet.environment.dogs === 'string' ? pet.environment.dogs : 'Yes') : 
+                    (pet.isDogsOk || 'Unknown')}
+                </Text>
+              </View>
             </View>
             <View style={styles.socialItem}>
-              <MaterialIcons name="healing" size={20} color="#4A56E2" />
-              <Text>
-                Special Care: {pet.attributes?.special_needs ? 'Yes' : 
-                  (pet.isSpecialNeeds && pet.isSpecialNeeds !== 'Unknown' ? 'Yes' : 'No')}
-              </Text>
+              <View style={styles.socialPadding}>
+                <Image 
+                  source={require("../assets/images/bCat2.png")}
+                  style={styles.socialIcon}
+                />
+              </View>
+              <View>
+                <Text style={styles.careTitle}>Cat-Compatible</Text>
+                <Text>
+                  {pet.environment?.cats ? 
+                    (typeof pet.environment.cats === 'string' ? pet.environment.cats : 'Yes') : 
+                    (pet.isCatsOk || 'Unknown')}
+                </Text>
+              </View>
             </View>
             <View style={styles.socialItem}>
-              <FontAwesome name="paw" size={20} color="#4A56E2" />
-              <Text>
-                Dog Friendly: {pet.environment?.dogs ? 
-                  (typeof pet.environment.dogs === 'string' ? pet.environment.dogs : 'Yes') : 
-                  (pet.isDogsOk || 'Unknown')}
-              </Text>
+              <View style={styles.socialPadding}>
+                <Image 
+                  source={require("../assets/images/bKids.png")}
+                  style={styles.socialIcon}
+                />
+              </View>
+              <View>
+                <Text style={styles.careTitle}>Great With Kids</Text>
+                <Text>
+                  {pet.environment?.children ? 
+                    (typeof pet.environment.children === 'string' ? pet.environment.children : 'Yes') : 
+                    (pet.isKidsOk || 'Unknown')}
+                </Text>
+              </View>
             </View>
             <View style={styles.socialItem}>
-              <FontAwesome name="cat" size={20} color="#4A56E2" />
-              <Text>
-                Cat Friendly: {pet.environment?.cats ? 
-                  (typeof pet.environment.cats === 'string' ? pet.environment.cats : 'Yes') : 
-                  (pet.isCatsOk || 'Unknown')}
-              </Text>
+              <View style={styles.socialPadding}>
+                <Image 
+                  source={require("../assets/images/bSpecial.png")}
+                  style={styles.socialIcon}
+                />
+              </View>
+              <View>
+                <Text style={styles.careTitle}>Special Care</Text>
+                <Text>
+                  {pet.attributes?.special_needs ? 'Yes' : 
+                    (pet.isSpecialNeeds && pet.isSpecialNeeds !== 'Unknown' ? 'Yes' : 'No')}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
 
-        {/* Tabs Section */}
-        <View style={styles.tabContainer}>
-          {["about", "health", "resources"].map((tab) => (
-            <TouchableOpacity
-              key={tab}
-              style={[styles.tab, activeTab === tab && styles.activeTab]}
-              onPress={() => setActiveTab(tab)}>
-              <Text
-                style={
-                  activeTab === tab ? styles.activeTabText : styles.tabText
-                }>
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
 
         {/* Tab Content */}
-        <View style={styles.tabContent}>
-          {activeTab === "about" && (
-            <View>
+        <View>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Hi, I'm {pet.name}!</Text>
               {isDescriptionLoading ? (
                 <View style={styles.loadingContainer}>
                   <ActivityIndicator size="small" color="#4A56E2" />
@@ -235,10 +323,9 @@ const PetDescription = ({ pet, onClose }) => {
                 </>
               )}
             </View>
-          )}
-          {activeTab === "health" && (
-            <View>
-              <Text style={styles.descriptionText}>Health information for {pet.name}:</Text>
+
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Health Information</Text>
               {isHealthLoading ? (
                 <View style={styles.loadingContainer}>
                   <ActivityIndicator size="large" color="#4A56E2" />
@@ -260,13 +347,6 @@ const PetDescription = ({ pet, onClose }) => {
                 </View>
               )}
             </View>
-          )}
-          {activeTab === "resources" && (
-            <Text>
-              Starter kit included: leash, collar, favorite toy, and 1-month
-              food supply.
-            </Text>
-          )}
         </View>
 
         {/* Lifestyle Preferences */}
@@ -305,9 +385,20 @@ const PetDescription = ({ pet, onClose }) => {
           </View>
         </View>
 
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Resources</Text>
+          <Text>
+            Starter kit included: leash, collar, favorite toy, and 1-month
+            food supply.
+          </Text>
+        </View>
+
         {/* Shelter Listing */}
-        <View style={styles.shelterListing}>
+        <View style={styles.sectionContainer}>
+          <Text style={styles.sectionTitle}>Shelter Listing</Text>
           <Text style={styles.shelterTitle}>{pet.location}</Text>
+        </View>
+      </ScrollView>
           <View style={styles.buttonRow}>
             <TouchableOpacity
               style={styles.favoriteButton}
@@ -320,16 +411,48 @@ const PetDescription = ({ pet, onClose }) => {
               <Text style={styles.adoptionButtonText}>Apply for Adoption</Text>
             </TouchableOpacity>
           </View>
-        </View>
-      </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+    headerContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingTop: height * 0.03,
+      marginHorizontal: width * 0.04,
+      paddingBottom: height * 0.01
+  },
+    iconPadding: {
+    padding: width * 0.02,
+    backgroundColor: "#e8e8e8",
+    borderRadius: 9999,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  socialPadding: {
+    padding: width * 0.02,
+    backgroundColor: "#b5dcfb",
+    borderRadius: 9999,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+    backArrowIcon: {
+    height: width * 0.05,
+    width: width * 0.05,
+  },
+  shareIcon: {
+    height: width * 0.05,
+    width: width * 0.05
+  },
+    title: {
+    fontWeight: 600,
+    fontSize: 19,
+  },
   container: { flex: 1, backgroundColor: "#fff" },
   scrollContainer: { flexGrow: 1 },
-  image: { width: "100%", height: height * 0.4 },
+  image: { width: "100%", height: height * 0.45 },
   loadingContainer: {
     padding: 20,
     alignItems: 'center',
@@ -356,23 +479,28 @@ const styles = StyleSheet.create({
   },
   likeButton: {
     position: "absolute",
-    top: height * 0.34,
-    right: 20,
-    backgroundColor: "white",
+    top: height * 0.39,
+    right: width * 0.04,
+    backgroundColor: "black",
     borderRadius: 30,
     padding: 8,
   },
+  heartIcon: {
+    
+  },
   infoContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 15,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: height * 0.02,
+    marginBottom: height * 0.01
   },
-  infoBox: { alignItems: "center" },
-  infoValue: { fontSize: 16, color: "#555" },
-  infoLabel: { fontSize: 12, color: "gray" },
-  nameSection: { padding: 20 },
-  breedText: { fontSize: 12, color: "gray" },
-  nameText: { fontSize: 28, fontWeight: "bold", color: "#333" },
+  infoBox: { flex: 1, alignItems: "center" },
+  infoValue: { fontSize: 14, color: "#777777" },
+  infoLabel: { fontSize: 15, color: "#ff9800", fontWeight: 500 },
+  nameSection: { paddingHorizontal: width * 0.04, paddingBottom: height * 0.03, paddingTop: height * 0.01 },
+  breedText: { fontSize: 14, color: "black", fontWeight: 500 },
+  nameText: { fontSize: 26, fontWeight: 700, color: "#0c7dd6" },
   locationRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -384,19 +512,19 @@ const styles = StyleSheet.create({
     color: "blue",
     textDecorationLine: "underline",
   },
-  sectionContainer: { padding: 20 },
-  sectionTitle: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
-  socialRow: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
+  sectionContainer: { paddingHorizontal: width * 0.04, paddingVertical: height * 0.02 },
+  sectionTitle: { fontSize: 18, fontWeight: "700", marginBottom: height * 0.005 },
   socialItem: {
-    width: "45%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 15,
-    borderWidth: 1,
-    borderColor: "#ddd",
+    paddingVertical: height * 0.005,
     flexDirection: "row",
+    gap: width * 0.03,
+  },
+  socialIcon: {
+    borderRadius: 9999,
     alignItems: "center",
-    gap: 8,
+    justifyContent: "center",
+    height: width * 0.05,
+    width: width * 0.05
   },
   tabContainer: { flexDirection: "row", marginHorizontal: 20, marginTop: 10 },
   tab: {
@@ -410,7 +538,7 @@ const styles = StyleSheet.create({
   tabText: { color: "gray" },
   activeTabText: { color: "#4A56E2", fontWeight: "bold" },
   tabContent: { padding: 20 },
-  readMoreText: { color: "#4A56E2", marginTop: 5 },
+  readMoreText: { color: "#0c7dd6", marginTop: 5 },
   descriptionText: { fontSize: 16, lineHeight: 24, color: "#333" },
   bulletContainer: { marginTop: 10 },
   bulletText: { marginBottom: 5, fontSize: 16, color: "#555" },
@@ -444,37 +572,51 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   tagOutlined: {
-    borderColor: "#4A56E2",
-    borderWidth: 1,
-    color: "#4A56E2",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
+    backgroundColor: "#b5dcfb",
+    color: "#064577",
+    fontWeight: 500,
+    fontSize: 15,
+    paddingVertical: height * 0.004,
+    paddingHorizontal: width * 0.03,
     borderRadius: 20,
   },
   shelterListing: { padding: 20 },
   shelterTitle: {
-    fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
-    textAlign: "center",
   },
-  buttonRow: { flexDirection: "row", justifyContent: "space-between" },
+  buttonRow: { 
+    flexDirection: "row", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    padding: width * 0.035,
+    gap: width * 0.03
+  },
   favoriteButton: {
-    backgroundColor: "#f2f2f2",
-    padding: 12,
+    backgroundColor: "white",
     borderRadius: 8,
-    width: "48%",
+    width: width * 0.45,
+    height: height * 0.06,
     alignItems: "center",
+    justifyContent: "center", 
+    borderWidth: 1,
+    borderColor: "#ff9800"
   },
-  favoriteButtonText: { fontSize: 16, color: "black" },
+  favoriteButtonText: { fontSize: 16, color: "#ff9800", fontWeight: 600 },
   adoptionButton: {
-    backgroundColor: "#4A56E2",
-    padding: 12,
+    backgroundColor: "#ff9800",
     borderRadius: 8,
-    width: "48%",
+    width: width * 0.45,
+    height: height * 0.06,
     alignItems: "center",
+    justifyContent: "center", 
+
   },
-  adoptionButtonText: { fontSize: 16, color: "white", fontWeight: "bold" },
+  adoptionButtonText: { fontSize: 16, color: "white", fontWeight: 600 },
+  careTitle: {
+    color: "#064577",
+    fontWeight: 600
+  },
 });
 
 export default PetDescription;

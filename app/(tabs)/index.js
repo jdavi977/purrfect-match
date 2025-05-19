@@ -1,4 +1,4 @@
-import { useNavigation } from "expo-router";
+import { useFocusEffect, useNavigation } from "expo-router";
 import React, { useState, useEffect, useRef } from "react";
 import {
   View,
@@ -41,6 +41,27 @@ export default function Index() {
   const router = useRouter();
   const answersContext = useAnswers();
 
+  // Used to read AsyncStorage for likedPets
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        try {
+          const json = await AsyncStorage.getItem("likedPets");
+          if (json) {
+            setLikedPets(JSON.parse(json));
+          }
+        } catch (e) {
+          console.error("Failed to load likedPets from storage", e);
+        }
+      })();
+    }, [])
+  );
+
+  // Changes local likedPets based on the reading above
+  useEffect(() => {
+    AsyncStorage.setItem("likedPets", JSON.stringify(likedPets)).catch(console.error);
+  }, [likedPets]);
+
   // Fetch pets from Petfinder API
   useEffect(() => {
     async function fetchPets() {
@@ -69,6 +90,7 @@ export default function Index() {
       if (!alreadyLiked) {
         return [...prev, pet];
       }
+      console.log("likedPets: ", likedPets)
       return prev;
     });
   };
@@ -121,7 +143,10 @@ export default function Index() {
       <View style={styles.headerContainer}>
         <View style={styles.topRow}>
           <Text style={styles.title}><Text style={{color: "#0c7dd6"}}>1223</Text> Happy Matches</Text>
-          <TouchableOpacity style={styles.filterButton}>
+          <TouchableOpacity 
+            style={styles.filterButton}
+            onPress={() => router.replace("/profile")}
+          >
             <FontAwesome name="sliders" size={20} color="black" />
           </TouchableOpacity>
         </View>
@@ -187,10 +212,11 @@ export default function Index() {
             pet={selectedPet}
             likedPets={likedPets}
             setLikedPets={setLikedPets}
+            liked={false}
             onClose={(liked) => {
               if (liked) {
-                setSelectedPet(null);
                 swiperRef.current?.swipeRight();
+                setTimeout(() => setSelectedPet(null), 300); // adjust to match your swipe duration
               } else {
                 setSelectedPet(null);
               }
