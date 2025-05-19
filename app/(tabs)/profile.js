@@ -70,21 +70,19 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         height: height * 0.1,
-        marginBottom: -8
     },
     leftArrow: {
         position: "absolute",
         left: 0,
-        width: 36,
-        height: 36,
+        width: width * 0.07,
         borderRadius: 18,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#F5F5F5",
     },
     title: {
-        fontSize: 15,
-        fontWeight: "500",
+        fontWeight: 600,
+        fontSize: 19,
     },
     progressBarContainer: {
         height: 10,
