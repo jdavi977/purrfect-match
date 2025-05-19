@@ -20,6 +20,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getPets } from "../../api/api-conn.js";
 import { getRescueGroupsPets } from "../../api/api-conn.js";
 import { useAnswers } from "../../context/AnswersContext";
+import { Image } from "expo-image";
 
 const { width, height } = Dimensions.get("screen");
 
@@ -147,7 +148,10 @@ export default function Index() {
             style={styles.filterButton}
             onPress={() => router.replace("/profile")}
           >
-            <FontAwesome name="sliders" size={20} color="black" />
+            <Image 
+              source={require("../../assets/images/Setting.png")}
+              style={styles.settingIcon}
+            />
           </TouchableOpacity>
         </View>
 
@@ -159,7 +163,10 @@ export default function Index() {
 
       <View style={styles.returnButtonContainer}>
         <TouchableOpacity onPress={handleUndo}>
-          <EvilIcons name={"undo"} size={26} color="white" />
+          <Image 
+            source={require("../../assets/images/wUndo.png")}
+            style={styles.undoIcon}
+          />
         </TouchableOpacity>
       </View>
 
@@ -250,8 +257,9 @@ const styles = StyleSheet.create({
   // Header
   headerContainer: {
     backgroundColor: "white",
-    paddingTop: 8,
     paddingHorizontal: 20,
+    paddingTop: height * 0.01,
+
   },
   topRow: {
     flexDirection: "row",
@@ -376,5 +384,13 @@ const styles = StyleSheet.create({
     height: 37,
     width: 37,
     backgroundColor: "#333333",
+  },
+  settingIcon: {
+    height: width * 0.05,
+    width: width * 0.05
+  },
+  undoIcon: {
+    height: width * 0.025,
+    width: width * 0.037
   },
 });

@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#F6F6F6",
         marginVertical: 8
     },
-        backArrowIcon: {
+    backArrowIcon: {
         height: width * 0.05,
         width: width * 0.05
     },

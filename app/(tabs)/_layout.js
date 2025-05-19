@@ -1,7 +1,10 @@
 import { Tabs } from "expo-router";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import { StyleSheet, Dimensions } from 'react-native';
 
 const ICON_SIZE = 27;
+const { width, height } = Dimensions.get("screen");
 
 export default function RootLayout() {
   return (
@@ -10,15 +13,11 @@ export default function RootLayout() {
         headerShown: false,
         tabBarInactiveTintColor: "grey",
         tabBarStyle: {
-          height: 90,
-          paddingBottom: 20,
-          borderTopWidth: 0,
-          elevation: 0, // Android shadow
-          shadowOpacity: 0, // IOS shadow
-          paddingTop: 10,
+          height: height * 0.09,
+          paddingTop: height * 0.01
         },
         tabBarLabelStyle: {
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: "bold",
           marginTop: 4,
         },
@@ -27,8 +26,10 @@ export default function RootLayout() {
         name="index"
         options={{
           title: "Browse",
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="paw" size={ICON_SIZE} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <Image source={focused ? require("../../assets/images/bPaw.png") : require("../../assets/images/gPaw.png")}
+              style={styles.settingIcon}
+            />
           ),
         }}
       />
@@ -36,8 +37,10 @@ export default function RootLayout() {
         name="favourite"
         options={{
           title: "Favourites",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="calendar-heart" size={30} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <Image source={focused ? require("../../assets/images/bFavourite-1.png") : require("../../assets/images/gFavourite.png")}
+              style={styles.settingIcon}
+            />
           ),
         }}
       />
@@ -45,11 +48,20 @@ export default function RootLayout() {
         name="profile"
         options={{
           title: "Account",
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-outline" size={30} color={color} />
+          tabBarIcon: ({ focused }) => (
+            <Image source={focused ? require("../../assets/images/bUser.png") : require("../../assets/images/gUser.png")}
+              style={styles.settingIcon}
+            />
           ),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  settingIcon: {
+    height: width * 0.06,
+    width: width * 0.06
+  },
+})
