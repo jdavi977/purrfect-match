@@ -1,3 +1,6 @@
+// components/Card.js
+
+import React from "react";
 import {
   Text,
   View,
@@ -7,111 +10,121 @@ import {
 } from "react-native";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { FontAwesome, Entypo } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
-const { width, height } = Dimensions.get("screen");
+const { width: SCREEN_W, height: SCREEN_H } = Dimensions.get("window");
 
-const Card = ({ name, age, breed, image, location, onPress, gender, id, pictures, size }) => {
+// Configuration
+const WIDTH_FRACTION = 0.9;    // 90% of screen width
+const ASPECT_RATIO = 4 / 8;    // width / height = 4:3
+const MAX_HEIGHT_FRACTION = 0.70; // card height ≤ 70% of screen height
 
-    return (
-        <View style={styles.container}>
-        <TouchableOpacity style={styles.imageWrapper} onPress={onPress}>
-            <Image source={image} style={styles.image} />
-            <LinearGradient
-            colors={["transparent", "rgba(0,0,0,.9)"]}
-            style={styles.gradient}>
-            <View style={styles.userContainer}>
-                <Text style={styles.descriptionText}>
-                {size} {breed} ︳ {age}/{gender} ︳ {id}
-                </Text>
-                <Text style={styles.topText}><Text style={styles.nameText}>{name},</Text> {age}</Text>
-                <View style={styles.locationText}>
-                    <Entypo name="location" size={12} color="#007AFF" />
-                    <Text style={{marginLeft: 8, color: "white", fontWeight: 500, fontSize: 14}}>{location}</Text>
-                </View>
+export default function Card({
+  name,
+  age,
+  breed,
+  image,
+  location,
+  onPress,
+  gender,
+  id,
+  size,
+}) {
+  // 1) calculate width
+  const wrapperWidth = SCREEN_W * WIDTH_FRACTION;
+
+  // 2) calculate height based on aspect ratio
+  const heightByAspect = wrapperWidth / ASPECT_RATIO;
+
+  // 3) clamp to max 70% of screen height
+  const wrapperHeight = Math.min(heightByAspect, SCREEN_H * MAX_HEIGHT_FRACTION);
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        style={[
+          styles.imageWrapper,
+          { width: wrapperWidth, height: wrapperHeight },
+        ]}
+        onPress={onPress}
+      >
+        <Image source={image} style={styles.image} />
+
+        <LinearGradient
+          colors={["transparent", "rgba(0,0,0,0.9)"]}
+          style={styles.gradient}
+        >
+          <View style={styles.userContainer}>
+            <Text style={styles.descriptionText}>
+              {size} {breed} ︳ {age}/{gender} ︳ {id}
+            </Text>
+            <Text style={styles.topText}>
+              <Text style={styles.nameText}>{name},</Text> {age}
+            </Text>
+            <View style={styles.locationRow}>
+              <Entypo name="location" size={SCREEN_H * 0.02} color="#007AFF" />
+              <Text style={styles.locationLabel}>{location}</Text>
             </View>
-            </LinearGradient>
-        </TouchableOpacity>
-        </View>
+          </View>
+        </LinearGradient>
+      </TouchableOpacity>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    top: height * -0.035,
+    // no flex here—parent Swiper handles layout
   },
+
   imageWrapper: {
-    position: "relative",
-    borderRadius: 20,
+    borderRadius: SCREEN_W * 0.05, // 5% corner radius
     overflow: "hidden",
-  },
-  outlineLeft: {
-    borderColor: "red",
-    borderWidth: 5,
-    borderRadius: 25,
+    backgroundColor: "#eee",
   },
 
-  outlineRight: {
-    borderColor: "green",
-    borderWidth: 5,
-    borderRadius: 25,
+  image: {
+    width: "100%",
+    height: "100%",
   },
 
-  outlineReset: {
-    borderColor: "white",
-    borderWidth: 0,
-    borderRadius: 10,
+  gradient: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    height: "30%", // fade covers bottom 30%
   },
 
   userContainer: {
     position: "absolute",
-    bottom: height *0.1,
-    left: 15,
+    bottom: SCREEN_H * 0.08, // 10% up from bottom
+    left: "4%",
+    right: "4%",
   },
-  image: {
-    width: width * 0.9,
-    height: height * 0.75,
-  },
-  gradient: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 300,
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20,
+
+  descriptionText: {
+    fontSize: SCREEN_W * 0.045,
+    color: "#fff",
   },
   topText: {
-    fontSize: 30,
-    color: "white",
+    fontSize: SCREEN_W * 0.07,
+    color: "#fff",
+    marginBottom: SCREEN_H * 0.005,
   },
   nameText: {
-    fontSize: 30,
-    color: "white",
+    fontSize: SCREEN_W * 0.07,
     fontWeight: "bold",
+    color: "#fff",
   },
-  preferenceText: {
-    marginLeft: 3,
-    marginTop: 3,
-    fontSize: 13,
-    color: "white",
-  },
-  locationText: {
-    marginTop: 4,
-    fontSize: 13,
-    color: "white",
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  descriptionText: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: "white",
-  },
-  preferenceContainer: {
+
+  locationRow: {
     flexDirection: "row",
     alignItems: "center",
   },
+  locationLabel: {
+    marginLeft: SCREEN_W * 0.02,
+    fontSize: SCREEN_W * 0.04,
+    color: "#fff",
+    fontWeight: "500",
+  },
 });
-
-export default Card;

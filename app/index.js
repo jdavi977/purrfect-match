@@ -12,7 +12,7 @@ const slides = [
   {
     key: 1,
     image: require("../assets/images/Logo.png"),
-    imageStyle: {width: width * 0.7, height: width * 0.232,}
+    imageStyle: {width: width * 0.7, height: width * 0.232, marginBottom: height * 0.1}
   },
   {
     key: 2,
@@ -57,14 +57,16 @@ const slides = [
   const renderItem = ({ item, index }) => (
     <View style={styles.slide}>
       {item.containerStyle ? (
-        <View style={item.containerStyle}>
-          <Image source={item.image} style={item.imageStyle} />
+        <View style={styles.slide}>
+          <View style={item.containerStyle}>
+            <Image source={item.image} style={item.imageStyle} />
+          </View>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.subtitle}>{item.subtitle}</Text>
         </View>
       ) : (
         <Image source={item.image} style={item.imageStyle} />
       )}
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.subtitle}>{item.subtitle}</Text>
     </View>
   );  
 
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
     height,
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 100,
+    paddingBottom: height * 0.1,
   },
   containerStyle: { 
     width: width * 0.35,  

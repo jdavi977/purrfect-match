@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingTop: height * 0.045,
+      paddingTop: height * 0.015,
       paddingLeft: 15,
       paddingRight: 15,
   },

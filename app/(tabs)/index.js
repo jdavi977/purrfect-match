@@ -170,7 +170,6 @@ export default function Index() {
         </TouchableOpacity>
       </View>
 
-
       <View style={styles.subContainer}>
         {isLoading ? (
           <View style={styles.loadingContainer}>
@@ -180,6 +179,7 @@ export default function Index() {
           <Swiper
             ref={swiperRef}
             cards={petData}
+            cardVerticalMargin={0} 
             renderCard={(card) => {
               if (!card) return null; // Skip rendering if card is undefined
               console.log("card", card);
@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: "white",
     paddingHorizontal: 20,
-    paddingTop: height * 0.01,
 
   },
   topRow: {
@@ -291,16 +290,17 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1, // Takes full available height
-    justifyContent: "center", // Centers vertically
-    alignItems: "center", // Centers horizontally
+    justifyContent: "flex-start", // Centers vertically
+    alignItems: "stretch", // Centers horizontally
     backgroundColor: "white",
   },
   subContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
     maxWidth: "100%",
+    marginTop: height * 0.028
   },
   dislikeButton: {
     height: width * 0.11, 
@@ -314,7 +314,6 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 6,
     elevation: 5,
-    marginRight: 3
   },
   likeButton: {
     height: width * 0.11, 
@@ -328,17 +327,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowRadius: 6,
     elevation: 5,
-    marginLeft: 3,
   },
   cardButtonsContainer: {
     position: "absolute",
     flexDirection: "row",
-    bottom: height * 0.045,
+    bottom: height * 0.03,
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
     gap: 10,
     zIndex: 10,
-    
   },
   navigationButtonsContainer: {
     position: "absolute",

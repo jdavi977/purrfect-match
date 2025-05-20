@@ -196,7 +196,7 @@ export default function QuestionScreen() {
                 >
                   <TextInput
                     style={[styles.inputOption, isSel ? styles.textSelected : styles.option]}
-                    placeholder="Please specify"
+                    placeholder="Others (please specify)"
                     value={otherText}
                     onChangeText={setOtherText}
                   />
@@ -256,16 +256,16 @@ export default function QuestionScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
-  stepContainer: { position: "relative", justifyContent: "center", alignItems: "center", height: height * 0.1, marginBottom: -6 },
+  stepContainer: { position: "relative", justifyContent: "center", alignItems: "center", height: height * 0.06, marginBottom: -6 },
   leftArrow: { position: "absolute", left: 0, width: 36, height: 36, borderRadius: 18, justifyContent: "center", alignItems: "center", backgroundColor: "#F5F5F5" },
   steps: { fontSize: 15, fontWeight: "500" },
-  progressBarContainer: { height: 10, width: "100%", backgroundColor: "#E8E8E8", borderRadius: 5, overflow: "hidden", alignSelf: "center", marginBottom: height * 0.02 },
+  progressBarContainer: { height: height * 0.01, width: "100%", backgroundColor: "#E8E8E8", borderRadius: 5, overflow: "hidden", alignSelf: "center", marginBottom: height * 0.02, marginTop: height * 0.01 },
   progressBar: { height: "100%", backgroundColor: "#ff9800" },
   questionContainer: { marginBottom: height * 0.02 },
   question: { fontSize: 25, fontWeight: "600", marginBottom: height * 0.01 },
   subText: { fontSize: 15, fontWeight: "600", color: "#777777" },
   optionsContainer: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", marginVertical: 10 },
-  questionButtons: { padding: 8, backgroundColor: "white", borderRadius: 8, marginVertical: 6, width: "100%", borderWidth: 2, borderColor: "#b5dcfb" },
+  questionButtons: { padding: 8, backgroundColor: "white", borderRadius: 8, marginVertical: 6, width: "100%", borderWidth: 2, borderColor: "#b5dcfb", flexDirection: "row", alignItems: "center", },
   selectedButton: { backgroundColor: "#b5dcfb" },
   option: { fontWeight: "600", color: "#0c7dd6" },
   textSelected: { fontWeight: "600", color: "#064577" },
@@ -282,6 +282,6 @@ const styles = StyleSheet.create({
   pillButtonSelected: { backgroundColor: "#cce5ff" },
   pillText: { color: "#4DA9FF", fontWeight: "600" },
   pillTextSelected: { color: "#064577" },
-  continueButton: { marginTop: height * 0.85, width: "90%", padding: 14, borderRadius: 8, alignItems: "center", position: "absolute" },
-  continueButtonText: { color: "white", fontSize: 16, fontWeight: "600" },
+  continueButton: { bottom: height * 0.05, width: "90%", padding: 14, borderRadius: 8, alignSelf: "center", position: "absolute", justifyContent: "center" },
+  continueButtonText: { color: "white", fontSize: 16, fontWeight: "600", textAlign: "center" },
 });

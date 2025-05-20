@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         position: "relative",
         justifyContent: "center",
         alignItems: "center",
-        height: height * 0.1,
+        height: height * 0.06,
         marginBottom: -8
     },
     leftArrow: {
@@ -97,15 +97,8 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "500",
     },
-    progressBarContainer: {
-        height: 10,
-        width: "100%",
-        backgroundColor: "#E8E8E8",
-        borderRadius: 5,
-        overflow: "hidden",
-        alignSelf: "center",
-        marginBottom: height * 0.02,
-    },
+  progressBarContainer: { height: height * 0.01, width: "100%", backgroundColor: "#E8E8E8", borderRadius: 5, overflow: "hidden", alignSelf: "center", marginBottom: height * 0.02, marginTop: height * 0.01 },
+
     progressBar: {
         height: "100%",
         backgroundColor: "#ff9800",
