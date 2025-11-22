@@ -1,50 +1,166 @@
-# Welcome to your Expo app 👋
+# Purrfect Match 🐾
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A React Native mobile application that helps you find your perfect pet match through an intelligent questionnaire and swipe-based browsing experience. Connect with verified animal shelters and discover pets that truly fit your lifestyle.
 
-## Get started
+## Features
 
-1. Install dependencies
+### 🎯 Smart Matching
+- **Personalized Questionnaire**: Answer 8 questions about your lifestyle, experience, and preferences
+- **AI-Enhanced Descriptions**: Pet descriptions are enhanced using Google Gemini AI for better insights
+- **Filtered Results**: Get pet recommendations based on your answers
 
+### 🎴 Swipe-Based Browsing
+- **Tinder-Style Interface**: Swipe right to like, left to pass on pets
+- **Pet Cards**: View key information including name, age, breed, size, location, and photos
+- **Detailed Profiles**: Tap on cards to see comprehensive pet descriptions and health information
+
+### ❤️ Favorites & Management
+- **Save Favorites**: Like pets and save them to your favorites list
+- **Undo Swipes**: Change your mind with the undo feature
+- **Profile Management**: Update your preferences and questionnaire answers anytime
+
+### 🏠 Shelter Integration
+- **RescueGroups API**: Connects to verified animal shelters
+- **Location-Based Search**: Find pets near you (currently configured for Calgary, Alberta)
+- **Real-Time Availability**: Browse only available pets from trusted shelters
+
+## Tech Stack
+
+- **Framework**: React Native with Expo (~52.0)
+- **Navigation**: Expo Router (file-based routing)
+- **State Management**: React Context API
+- **Storage**: AsyncStorage for local data persistence
+- **APIs**:
+  - [RescueGroups API](https://rescuegroups.org/) - Pet data and shelter information
+  - [Google Gemini AI](https://ai.google.dev/) - Enhanced pet descriptions
+- **UI Components**: 
+  - React Native Deck Swiper for card swiping
+  - Expo Vector Icons
+  - Custom styled components
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+- Expo CLI (`npm install -g expo-cli`)
+- iOS Simulator (Mac) or Android Emulator, or Expo Go app on your phone
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd purrfect-match
+   ```
+
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
+3. Set up environment variables:
+   - Create a `.env` file or configure `app.config.js` with:
+     - `RESCUE_GROUPS_API_KEY` - Your RescueGroups API key
+     - Gemini API key (currently configured in code)
 
+4. Start the development server:
    ```bash
-    npx expo start
+   npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+5. Run on your preferred platform:
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
+   - Scan QR code with Expo Go app on your phone
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+purrfect-match/
+├── app/                    # Expo Router pages
+│   ├── (tabs)/            # Tab navigation screens
+│   │   ├── index.js       # Main browsing/swiping screen
+│   │   ├── favourite.js   # Favorites list
+│   │   └── profile.js     # User profile
+│   ├── index.js           # Intro/onboarding screens
+│   ├── questionnaire.js   # Questionnaire flow
+│   └── questionSummary.js # Review answers
+├── api/                   # API integrations
+│   ├── api-conn.js        # RescueGroups API client
+│   └── gemini/            # Gemini AI utilities
+├── components/            # Reusable UI components
+│   ├── Card.js            # Pet card component
+│   ├── CardButtons.js     # Swipe action buttons
+│   └── PetDescription.js  # Detailed pet view
+├── context/               # React Context providers
+│   └── AnswersContext.js  # Questionnaire answers state
+└── utils/                 # Utility functions
+    ├── questions.js       # Questionnaire definitions
+    └── petData.js         # Pet data utilities
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Key Features Explained
 
-## Learn more
+### Questionnaire System
+The app uses an 8-question questionnaire to understand:
+- Household composition (adults, children)
+- Pet ownership experience
+- Activity level
+- Pet type preference (Cat/Dog)
+- Age preference
+- Desired traits
 
-To learn more about developing your project with Expo, look at the following resources:
+Answers are stored in context and used to filter and match pets from the RescueGroups API.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### AI-Enhanced Descriptions
+Pet descriptions from shelters are processed through Google Gemini AI to:
+- Clean and format descriptions
+- Extract health information
+- Identify key traits
+- Create more readable, informative profiles
 
-## Join the community
+### Swipe Interface
+Built with `react-native-deck-swiper`, the app provides:
+- Smooth card swiping animations
+- Like/dislike tracking
+- Undo functionality
+- Infinite scroll through available pets
 
-Join our community of developers creating universal apps.
+## Configuration
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### API Keys
+The app requires API keys for:
+1. **RescueGroups API**: Set in `app.config.js` under `extra.RESCUE_GROUPS_API_KEY`
+2. **Google Gemini API**: Currently configured in `api/gemini/geminiConn.js`
+
+### Location
+Default location is set to Calgary, Alberta (coordinates: 51.0111, -114.1319). You can modify this in `api/api-conn.js` in the `filterRadius` configuration.
+
+## Available Scripts
+
+- `npm start` - Start Expo development server
+- `npm run android` - Run on Android emulator
+- `npm run ios` - Run on iOS simulator
+- `npm run web` - Run in web browser
+- `npm test` - Run tests
+- `npm run lint` - Run ESLint
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is private.
+
+## Acknowledgments
+
+- [RescueGroups](https://rescuegroups.org/) for providing pet adoption data
+- [Google Gemini](https://ai.google.dev/) for AI-powered description enhancement
+- [Expo](https://expo.dev/) for the amazing React Native framework
+
+---
+
+Made with ❤️ for finding forever homes for pets
